@@ -14,7 +14,7 @@ setup(
     install_requires=['setuptools'],
     zip_safe=True,
     maintainer='harsh',
-    maintainer_email='harshawardhan.patil@stud.hs-coburg.de',
+    maintainer_email='pat3343s@hs-coburg.de',
     description='TODO: Package description',
     license='TODO: License declaration',
     tests_require=['pytest'],
