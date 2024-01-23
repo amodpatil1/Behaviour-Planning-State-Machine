@@ -4,7 +4,7 @@
   <name>adapt_behplan</name>
   <version>0.0.0</version>
   <description>TODO: Package description</description>
-  <maintainer email="harshawardhan.patil@stud.hs-coburg.de">harsh</maintainer>
+  <maintainer email="pat3343s@hs-coburg.de">amod</maintainer>
   <license>TODO: License declaration</license>
 
   <test_depend>ament_copyright</test_depend>
