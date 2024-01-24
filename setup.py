@@ -20,6 +20,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+              'listener = adapt_behplan.sub:main',
+              'talker = adapt_behplan.pub:main'
         ],
     },
 )
