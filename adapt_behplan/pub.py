@@ -19,9 +19,8 @@ class BehplanPub(Node):
     def timer_callback(self):
         msg = String()
         msg.data = 'Hello Team: %d' % self.i
-        self.publisher_speed.publish(msg)
-        self.publisher_wp.publish(msg)
-        self.publisher_mc.publish(msg)
+        self.publisher_spd.publish(msg)
+        self.publisher_mc_md.publish(msg)
         self.get_logger().info('Publishing: "%s"' % msg.data)
         self.i += 1
 
