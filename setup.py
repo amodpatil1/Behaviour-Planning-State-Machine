@@ -13,13 +13,15 @@ setup(
     ],
     install_requires=['setuptools'],
     zip_safe=True,
-    maintainer='harsh',
+    maintainer='Amod',
     maintainer_email='pat3343s@hs-coburg.de',
     description='TODO: Package description',
     license='TODO: License declaration',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+              'listener = adapt_behplan.sub:main',
+              'talker = adapt_behplan.pub:main'
         ],
     },
 )
