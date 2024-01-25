@@ -11,4 +11,4 @@ Behaviour Planning integrates inputs from the Environmental Model and Route Comp
 | Output | /manouver_commands| | |
 | **Connected Components** | **Input** - Route Computer, Environment model <br> **Output** - Lateral and Longitudinal Control |
 ## Behaviour Planning Block Diagram
- <img src="images/behav.png" alt="Behaviour Planning Block Diagram" title="Behaviour Planning" width="800" height="250">
+ <img src="images/behplan.jpg" alt="Behaviour Planning Block Diagram" title="Behaviour Planning" width="800" height="250">
