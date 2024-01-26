@@ -45,7 +45,7 @@ if __name__ == '__main__':
     # Destroy the node explicitly
     # (optional - otherwise it will be done automatically
     # when the garbage collector destroys the node object)
-    behplan.destroy_node()
+    beh_plan.destroy_node()
     rclpy.shutdown()
 
 
