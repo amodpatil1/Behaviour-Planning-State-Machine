@@ -6,6 +6,5 @@ Behaviour Planning integrates inputs from the Environmental Model and Route Comp
 | Input |/complete_model | |Complete model of where the vehicle is located with respect to its environment | |
 | Output | /beh_spd | v2x/Speed | Speed specifications of the vehicle | 
 | Output | /beh_mcmd |  v2x/LateralAcceleration | Acceleration to the lateral direction |
-| **Connected Components** | **Input** - Route Computer, Environment model <br> **Output** - Lateral and Longitudinal Control |
 ## Behaviour Planning Block Diagram
  <img src="images/behplan.jpg" alt="Behaviour Planning Block Diagram" title="Behaviour Planning" width="800" height="250">
