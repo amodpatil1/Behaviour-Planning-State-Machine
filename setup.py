@@ -7,7 +7,7 @@ setup(
     version='0.0.0',
     packages=[package_name],
     data_files=[
-        ('share/ament_index/resource_index/packages',
+        ('share/ament_index/resource_index/packages', #to
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
     ],
