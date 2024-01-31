@@ -19,7 +19,7 @@ class BehplanPub(Node):
 
         #Subscriber setup
         self.subscription = self.create_subscription(String,'/routecomputer/route',self.route_callback,10)
-        self.subscription = self.create_subscription(String,'/complete_model/env_mod',self.env_mod_callback,10)
+        self.subscription = self.create_subscription(String,'/env_mod/complete_model',self.env_mod_callback,10)
    
 
     def timer_callback(self):
