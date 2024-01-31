@@ -1,6 +1,12 @@
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import String
+from nav_msgs.msg import Path
+from nav_msgs.msg import OccupancyGrid
+from geometry_msgs.msg import Pose
+from geometry_msgs.msg import Twist
+
+
+
 
 
 class BehplanPub(Node):
@@ -10,31 +16,35 @@ class BehplanPub(Node):
         
         
         #Publisher setup
-        self.publisher_spd = self.create_publisher(String, 'beh_spd/spd', 10)
-        self.publisher_mc_md = self.create_publisher(String, 'beh_mcmd/mc_md', 10)
-        timer_period = 0.5  # seconds
+        self.publisher_cmd_vel = self.create_publisher(Twist, 'cmd_vel', 10)
+        timer_period = 0.1  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
         self.i = 0
 
 
         #Subscriber setup
-        self.subscription = self.create_subscription(String,'/routecomputer/route',self.route_callback,10)
-        self.subscription = self.create_subscription(String,'/complete_model/env_mod',self.env_mod_callback,10)
+        self.subscription = self.create_subscription(Path,'/routecomputer/route',self.route_callback,10)
+        self.subscription = self.create_subscription(OccupancyGrid,'/env_mod/complete_model',self.env_mod_callback,10)
+        self.subscription = self.create_subscription(Pose, '/localization/loc_pose',self.localization_callback,10)
    
 
     def timer_callback(self):
-        msg = String()
-        msg.data = 'Hello Team: %d' % self.i
-        self.publisher_spd.publish(msg)
-        self.publisher_mc_md.publish(msg)
-        self.get_logger().info ('Publishing:"/spd" %s' % msg.data)
-        self.get_logger().info ('Publishing:"/mc_md" %s' % msg.data)
+        twist_msg = Twist()
+        twist_msg.linear.x = 1.0  
+        twist_msg.angular.z = 0.5  
+
+        self.publisher_cmd_vel.publish(twist_msg)
+
+        self.get_logger().info('Publishing manouver commmands Linear Velocity: %f, Angular Velocity: %f' % (twist_msg.linear.x, twist_msg.angular.z))
         self.i += 1
+
 
     def route_callback(self, msg):
         self.get_logger().info('route: "%s"' %msg.data)
     def env_mod_callback(self, msg):    
         self.get_logger().info('env_mod: "%s"' %msg.data)
+    def localization_callback(self, msg):       
+        self.get_logger().info('localization: "%s"' %msg.data)
 
     
 def main(args=None):
