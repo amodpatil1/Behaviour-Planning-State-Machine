@@ -23,9 +23,14 @@ class BehplanPub(Node):
 
 
         #Subscriber setup
+<<<<<<< HEAD
         self.subscription = self.create_subscription(Path,'/routecomputer/route',self.route_callback,10)
         self.subscription = self.create_subscription(OccupancyGrid,'/env_mod/complete_model',self.env_mod_callback,10)
         self.subscription = self.create_subscription(Pose, '/localization/loc_pose',self.localization_callback,10)
+=======
+        self.subscription = self.create_subscription(String,'/routecomputer/route',self.route_callback,10)
+        self.subscription = self.create_subscription(String,'/env_mod/complete_model',self.env_mod_callback,10)
+>>>>>>> 5b9016b5dc764349de460aaf5a848de68851257a
    
 
     def timer_callback(self):
