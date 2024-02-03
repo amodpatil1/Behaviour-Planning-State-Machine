@@ -7,4 +7,4 @@ Behaviour Planning integrates inputs from the Environmental Model and Route Comp
 | Input |/loc_pose | PoseStamped|Location of Ego Vehicle | |
 | Output |/cmd_vel | geometry_msgs/Twist | linear and angular velocities of the vehicle |
 ## Behaviour Planning Block Diagram
- <img src="images/behplan.jpg" alt="Behaviour Planning Block Diagram" title="Behaviour Planning" width="800" height="250">
+ <img src="images/behplan.png" alt="Behaviour Planning Block Diagram" title="Behaviour Planning" width="800" height="250">
