@@ -25,7 +25,7 @@ class Behplan(Node):
         #Subscriber setup
         self.subscription = self.create_subscription(Path,'/route',self.route_computer_callback,10)
         self.subscription = self.create_subscription(OccupancyGrid,'/complete_model',self.env_mod_callback,10)
-        self.subscription = self.create_subscription(Pose, '/loc_pose',self.localization_callback,10)
+        self.subscription = self.create_subscription(PoseStamped, '/loc_pose',self.localization_callback,10)
    
 
     def timer_callback(self):
