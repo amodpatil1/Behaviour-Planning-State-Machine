@@ -1,8 +1,8 @@
 import rclpy
 from rclpy.node import Node
-from nav_msgs.msg import Path
+#from nav_msgs.msg import Path
 from nav_msgs.msg import OccupancyGrid
-from geometry_msgs.msg import PoseStamped
+from geometry_msgs.msg import PoseStamped,PoseArray
 from geometry_msgs.msg import Twist
 
 
@@ -23,7 +23,7 @@ class Behplan(Node):
 
 
         #Subscriber setup
-        self.subscription = self.create_subscription(Path,'/route',self.route_computer_callback,10)
+        self.subscription = self.create_subscription(PoseArray,'/route',self.route_computer_callback,10)
         self.subscription = self.create_subscription(OccupancyGrid,'/complete_model',self.env_mod_callback,10)
         self.subscription = self.create_subscription(PoseStamped, '/loc_pose',self.localization_callback,10)
    
@@ -42,7 +42,7 @@ class Behplan(Node):
         self.get_logger().info('route: "%s"' %msg.data)
     def env_mod_callback(self, msg):    
         self.get_logger().info('complete_model: "%s"' %msg.data)
-    def localization_callback(self, msg):       
+    def localization_callback(self, msg,PoseStamped):       
         self.get_logger().info('loc_pose: "%s"' %msg.data)
 
     
