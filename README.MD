@@ -4,7 +4,7 @@ Behaviour Planning integrates inputs from the Environmental Model and Route Comp
 | --------- | ---------- | ---------- | ----------- |
 | Input | /route|  nav_msgs/msg/Path| A optimum route from the vehicle's location to the parking spot | |
 | Input |/complete_model | |Complete model of where the vehicle is located with respect to its environment | |
-| Output | /beh_spd | v2x/Speed | Speed specifications of the vehicle | 
-| Output | /beh_mcmd |  v2x/LateralAcceleration | Acceleration to the lateral direction |
+| Input |/loc_pose | PoseStamped|Location of Ego Vehicle | |
+| Output |/cmd_vel | geometry_msgs/Twist | linear and angular velocities of the vehicle |
 ## Behaviour Planning Block Diagram
  <img src="images/behplan.jpg" alt="Behaviour Planning Block Diagram" title="Behaviour Planning" width="800" height="250">
