@@ -1,5 +1,5 @@
 ## Component Description
-Behaviour Planning integrates inputs from the Environmental Model and Route Computer, determining the vehicle's path, speed, and maneuvers based on surrounding conditions. It outputs waypoints, speed limits, and maneuver commands, which are executed by the Lateral and Longitudinal Control systems.
+Behaviour Planning integrates inputs from the Environmental Model and Route Computer, determining the vehicle's path, speed, and maneuvers based on the surrounding conditions. It outputs speed limits and maneuver commands, which are executed by the Lateral and Longitudinal Control systems.
 | In/Out | Topic Name| Message Type | Description | 
 | --------- | ---------- | ---------- | ----------- |
 | Input | /route|  nav_msgs/msg/Path| A optimum route from the vehicle's location to the parking spot | |
