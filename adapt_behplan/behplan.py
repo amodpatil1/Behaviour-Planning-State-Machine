@@ -2,8 +2,7 @@ import rclpy
 from rclpy.node import Node
 #from nav_msgs.msg import Path
 from nav_msgs.msg import OccupancyGrid
-from geometry_msgs.msg import PoseStamped,PoseArray
-from geometry_msgs.msg import Twist
+from geometry_msgs.msg import PoseStamped,PoseArray, Twist
 
 
 
@@ -38,12 +37,29 @@ class Behplan(Node):
         self.i += 1
 
 
-    def route_computer_callback(self, msg):
+    def route_computer_callback(self, msg,PoseArray):
         self.get_logger().info('route: "%s"' %msg.data)
+        msg = PoseArray()
+        pose1 = PoseArray(0, 0, 0)
+        pose2 = PoseArray(0, 0, 0)
+        pose3 = PoseArray(0, 0, 0)
+        Poses = [pose1, pose2, pose3]
+
+
     def env_mod_callback(self, msg):    
         self.get_logger().info('complete_model: "%s"' %msg.data)
+        self.environment_model = OccupancyGrid()
+        self.environment_model.header.frame_id = 'environment_model'
+        self.environment_model.info.resolution = 0.5  
+        self.environment_model.info.width = 100  # grid size
+        self.environment_model.info.height = 100  #grid size
+        self.environment_model.data = [0] * (self.environment_model.info.width * self.environment_model.info.height)
+
+
     def localization_callback(self, msg,PoseStamped):       
         self.get_logger().info('loc_pose: "%s"' %msg.data)
+        self.localization.header.frame_id = 'localization'
+
 
     
 def main(args=None):
