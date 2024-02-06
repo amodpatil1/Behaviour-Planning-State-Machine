@@ -9,7 +9,7 @@ Behaviour Planning integrates inputs from the Environmental Model and Route Comp
 
 ## The RQT Graph
 
-<img src="images/behpl.png" alt="Behaviour Planning Block Diagram" title="Behaviour Planning" width="781" height="441">
+<img src="images/behpl.png" alt="Behaviour Planning Block Diagram" title="Behaviour Planning" width="881" height="350">
 
 ## Behaviour Planning Block Diagram
 
