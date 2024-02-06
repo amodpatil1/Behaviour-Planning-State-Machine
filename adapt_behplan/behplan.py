@@ -23,7 +23,6 @@ class Behplan(Node):
 
         #Subscriber setup
         self.subscription = self.create_subscription(PoseArray,'/route',self.route_computer_callback,10)
-        self.subscription = self.create_subscription(PoseArray,'/route',self.route_computer_callback,10)
         self.subscription = self.create_subscription(OccupancyGrid,'/complete_model',self.env_mod_callback,10)
         self.subscription = self.create_subscription(PoseStamped, '/loc_pose',self.localization_callback,10)
    
@@ -38,18 +37,15 @@ class Behplan(Node):
         self.i += 1
 
 
-def route_computer_callback(self, msg):
-    poses = msg.poses  # Assuming PoseArray has a 'poses' attribute containing a list of Pose messages
+    def route_computer_callback(self, msg):
+        poses = msg.poses  # Assuming PoseArray has a 'poses' attribute containing a list of Pose messages
 
-    # Process each pose in the received PoseArray
-    for i, pose in enumerate(poses):
-        # Access pose information (position and orientation)
-        position = pose.position
-        orientation = pose.orientation
-
-        # Your custom logic for processing each pose goes here
-        # For example, print the information
-        self.get_logger().info(f'Pose {i + 1} - Position: ({position.x}, {position.y}, {position.z})'% pose_array)
+        # Process each pose in the received PoseArray
+        for i, pose in enumerate(poses):
+            # Access pose information (position and orientation)
+            position = pose.position
+            orientation = pose.orientation
+            self.get_logger().info(f'Pose {i + 1} - Position: ({position.x}, {position.y}, {position.z})'% PoseArray)
 
 
 
