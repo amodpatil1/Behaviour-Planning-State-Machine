@@ -6,8 +6,15 @@ Behaviour Planning integrates inputs from the Environmental Model and Route Comp
 | Input |/complete_model | OccupancyGrid|Complete model of where the vehicle is located with respect to its environment | |
 | Input |/loc_pose | PoseStamped|Location of Ego Vehicle | |
 | Output |/cmd_vel | geometry_msgs/Twist | linear and angular velocities of the vehicle |
+
+## The RQT Graph
+
+<img src="images/behpl.png" alt="Behaviour Planning Block Diagram" title="Behaviour Planning" width="781" height="441">
+
 ## Behaviour Planning Block Diagram
+
  <img src="images/behplan.png" alt="Behaviour Planning Block Diagram" title="Behaviour Planning" width="781" height="441">
+
 
  ## Installation Instructions
 
