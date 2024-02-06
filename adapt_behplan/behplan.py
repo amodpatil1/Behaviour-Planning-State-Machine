@@ -47,8 +47,6 @@ class Behplan(Node):
             orientation = pose.orientation
             self.get_logger().info(f'Pose {i + 1} - Position: ({position.x}, {position.y}, {position.z})'% PoseArray)
 
-
-
     def env_mod_callback(self, msg):    
         self.get_logger().info('complete_model: "%s"' %msg.data)
         self.environment_model = OccupancyGrid()
@@ -58,20 +56,9 @@ class Behplan(Node):
         self.environment_model.info.height = 100  #grid size
         self.environment_model.data = [0] * (self.environment_model.info.width * self.environment_model.info.height)
 
-
-    def localization_callback(self, msg,PoseStamped):       
-        self.environment_model = OccupancyGrid()
-        self.environment_model.header.frame_id = 'environment_model'
-        self.environment_model.info.resolution = 0.5  
-        self.environment_model.info.width = 100  # grid size
-        self.environment_model.info.height = 100  #grid size
-        self.environment_model.data = [0] * (self.environment_model.info.width * self.environment_model.info.height)
-
-
     def localization_callback(self, msg,PoseStamped):       
         self.get_logger().info('loc_pose: "%s"' %msg.data)
         self.localization.header.frame_id = 'localization'
-
         self.localization.header.frame_id = 'localization'
 
 
