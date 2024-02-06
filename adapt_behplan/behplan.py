@@ -1,9 +1,7 @@
 import rclpy
 from rclpy.node import Node
-from nav_msgs.msg import Path
 from nav_msgs.msg import OccupancyGrid
-from geometry_msgs.msg import PoseStamped
-from geometry_msgs.msg import Twist
+from geometry_msgs.msg import PoseStamped,PoseArray, Twist
 
 
 
@@ -23,7 +21,7 @@ class Behplan(Node):
 
 
         #Subscriber setup
-        self.subscription = self.create_subscription(Path,'/route',self.route_computer_callback,10)
+        self.subscription = self.create_subscription(PoseArray,'/route',self.route_computer_callback,10)
         self.subscription = self.create_subscription(OccupancyGrid,'/complete_model',self.env_mod_callback,10)
         self.subscription = self.create_subscription(PoseStamped, '/loc_pose',self.localization_callback,10)
    
@@ -38,12 +36,35 @@ class Behplan(Node):
         self.i += 1
 
 
-    def route_computer_callback(self, msg):
-        self.get_logger().info('route: "%s"' %msg.data)
+def route_computer_callback(self, msg):
+    poses = msg.poses  # Assuming PoseArray has a 'poses' attribute containing a list of Pose messages
+
+    # Process each pose in the received PoseArray
+    for i, pose in enumerate(poses):
+        # Access pose information (position and orientation)
+        position = pose.position
+        orientation = pose.orientation
+
+        # Your custom logic for processing each pose goes here
+        # For example, print the information
+        self.get_logger().info(f'Pose {i + 1} - Position: ({position.x}, {position.y}, {position.z})'% pose_array)
+
+
+
     def env_mod_callback(self, msg):    
         self.get_logger().info('complete_model: "%s"' %msg.data)
-    def localization_callback(self, msg):       
+        self.environment_model = OccupancyGrid()
+        self.environment_model.header.frame_id = 'environment_model'
+        self.environment_model.info.resolution = 0.5  
+        self.environment_model.info.width = 100  # grid size
+        self.environment_model.info.height = 100  #grid size
+        self.environment_model.data = [0] * (self.environment_model.info.width * self.environment_model.info.height)
+
+
+    def localization_callback(self, msg,PoseStamped):       
         self.get_logger().info('loc_pose: "%s"' %msg.data)
+        self.localization.header.frame_id = 'localization'
+
 
     
 def main(args=None):
