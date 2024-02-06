@@ -45,7 +45,8 @@ class Behplan(Node):
             # Access pose information (position and orientation)
             position = pose.position
             orientation = pose.orientation
-            self.get_logger().info(f'Pose {i + 1} - Position: ({position.x}, {position.y}, {position.z})'% PoseArray)
+            self.get_logger().info(f'Pose {i + 1} - Position: ({position.x}, {position.y}, {position.z})')
+
 
     def env_mod_callback(self, msg):    
         self.get_logger().info('complete_model: "%s"' %msg.data)
