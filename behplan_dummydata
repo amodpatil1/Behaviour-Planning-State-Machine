@@ -1,0 +1,16 @@
+The Interface test for the node can be performed by following the steps below:
+
+1. After running the node in one terminal, open separate terminal and put in the commands provided below
+
+2. I have created separate commands for publishing dummy data for each topic.
+
+>>Dummy Data for Route (PoseArray)
+ros2 topic pub /info_list std_msgs/String "data: 'Juno Muller; AUDI R8; 4XYZ28'"
+
+>>Dummy Data for Vehicle location
+ros2 topic pub /loc_pose geometry_msgs/PoseStamped "{header: {stamp: {sec: 0, nanosec: 0}, frame_id: 'map'}, pose: {position: {x: 25.0, y: 249.0, z: 50.0}, orientation: {x: 0.0, y: 0.0, z: 0.0, w: 1.0}}}"
+
+
+3. The mentioned commands will publish the data continously which will be subscribed by the node created for User Interface 1, and the content will be displayed on the terminal where the node is running.
+
+k
