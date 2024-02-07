@@ -2,7 +2,6 @@ import rclpy
 from rclpy.node import Node
 from nav_msgs.msg import OccupancyGrid
 from geometry_msgs.msg import PoseStamped,PoseArray, Twist
-from geometry_msgs.msg import PoseStamped,PoseArray, Twist
 
 
 
@@ -25,6 +24,10 @@ class Behplan(Node):
         self.subscription = self.create_subscription(PoseArray,'/route',self.route_computer_callback,10)
         self.subscription = self.create_subscription(OccupancyGrid,'/complete_model',self.env_mod_callback,10)
         self.subscription = self.create_subscription(PoseStamped, '/loc_pose',self.localization_callback,10)
+
+        # Initializing variables.
+        self.input_1 = []
+
    
 
     def timer_callback(self):
@@ -57,10 +60,15 @@ class Behplan(Node):
         self.environment_model.info.height = 100  #grid size
         self.environment_model.data = [0] * (self.environment_model.info.width * self.environment_model.info.height)
 
-    def localization_callback(self, msg,PoseStamped):       
-        self.get_logger().info('loc_pose: "%s"' %msg.data)
-        self.localization.header.frame_id = 'localization'
-        self.localization.header.frame_id = 'localization'
+    #def localization_callback(self, msg):
+        # This method will be called whenever a message is received on the /loc_pose topic
+        #position = msg.pose.position
+        #orientation = msg.pose.orientation
+        #self.get_logger().info(f'Received PoseStamped message - Position: ({position.x}, {position.y}, {position.z}) Orientation: ({orientation.x}, {orientation.y}, {orientation.z}, {orientation.w})')
+    def localization_callback(self, msg: PoseStamped):          # Callback for EV location data.
+        self.input_1.append(msg)                                
+        self.get_logger().info('Initial location of the EV: (%f, %f, %f)' % (msg.pose.position.x, msg.pose.position.y, msg.pose.position.z))
+
 
 
     
