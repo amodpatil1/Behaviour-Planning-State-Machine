@@ -27,6 +27,8 @@ class Behplan(Node):
 
         # Initializing variables.
         self.input_1 = []
+    
+    
 
    
 
@@ -37,7 +39,7 @@ class Behplan(Node):
         self.publisher_cmd_vel.publish(twist_msg)
 
         self.get_logger().info('Publishing manouver commmands Linear Velocity: %f, Angular Velocity: %f' % (twist_msg.linear.x, twist_msg.angular.z))
-        self.i += 1
+    
 
 
     def route_computer_callback(self, msg):
@@ -66,7 +68,8 @@ class Behplan(Node):
         #orientation = msg.pose.orientation
         #self.get_logger().info(f'Received PoseStamped message - Position: ({position.x}, {position.y}, {position.z}) Orientation: ({orientation.x}, {orientation.y}, {orientation.z}, {orientation.w})')
     def localization_callback(self, msg: PoseStamped):          # Callback for EV location data.
-        self.input_1.append(msg)                                
+        if len(self.input_1) >= self.MAX_MESSAGES:
+         self.input_1.append(msg)                                
         self.get_logger().info('Initial location of the EV: (%f, %f, %f)' % (msg.pose.position.x, msg.pose.position.y, msg.pose.position.z))
 
 
