@@ -1,11 +1,11 @@
 ## Component Description
-Behaviour Planning integrates inputs from the Environmental Model and Route Computer, determining the vehicle's path, speed, and maneuvers based on the surrounding conditions. It outputs speed limits and maneuver commands, which are executed by the Lateral and Longitudinal Control systems.
+Behaviour Planning integrates inputs from the Environmental Model and Route Computer, determining the vehicle's path, speed, and maneuvers based on the inputs from the Environmental Model which gives the occupancy gridmap and the Route computer which Provides the optimal route towards the parking spot. After computing all the inputs, Behviour Planning outputs speed limits and maneuver commands in the form of a Twist message, which are executed by the Lateral and Longitudinal Control systems.
 | In/Out | Topic Name| Message Type | Description | 
 | --------- | ---------- | ---------- | ----------- |
-| Input | /route|  nav_msgs/msg/Path| A optimum route from the vehicle's location to the parking spot | |
-| Input |/complete_model | OccupancyGrid|Complete model of where the vehicle is located with respect to its environment | |
-| Input |/loc_pose | PoseStamped|Location of Ego Vehicle | |
-| Output |/cmd_vel | geometry_msgs/Twist | linear and angular velocities of the vehicle |
+| Input | /route|PoseArray| A optimum route from the vehicle's location to the parking spot | |
+| Input |/complete_model |OccupancyGrid|Complete model of where the vehicle is located with respect to its environment | |
+| Input |/loc_pose |PoseStamped|Location of Ego Vehicle | |
+| Output |/cmd_vel |Twist| linear and angular velocities of the vehicle |
 
 ## The RQT Graph
 
