@@ -50,4 +50,4 @@ source install/setup.bash
 You can now launch the Behaviour Planning node:
 The entry point for Behaviour Planning is **`behaviour_node`**.
 ```shell
-ros2 run adapt_behplan behaviour_node
+ros2 run adapt_behplan beh_node
