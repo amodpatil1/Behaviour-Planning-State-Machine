@@ -10,7 +10,7 @@ class Behplan(Node):
         super().__init__('beh_plan')
 
         # Publisher setup
-        self.publisher_cmd_vel = self.create_publisher(Twist, '/cmd_vel', 10)
+        self.publisher_cmd_vel = self.create_publisher(Twist, '/act_cmd', 10)
         timer_period = 0.1  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
 
@@ -35,10 +35,10 @@ class Behplan(Node):
             twist_msg.linear.x = 0.0  # Stop the vehicle
         else:
             if self.current_waypoint_index <= 4:
-                twist_msg.linear.x = (self.current_waypoint_index + 1) * 0.1  # Accelerate
+                twist_msg.linear.x = 0.8  # Accelerate
             else:
                 # Decelerate after reaching waypoint 5
-                twist_msg.linear.x = max(0.0, 1.0 - (self.current_waypoint_index + 1) * 0.1)
+                twist_msg.linear.x = 0.8
 
         twist_msg.angular.z = 0.0  # No angular velocity for this example
         self.publisher_cmd_vel.publish(twist_msg)
@@ -60,8 +60,8 @@ class Behplan(Node):
                         self.reached_parking_spot = True  
 
             else:
-                current_waypoint = (msg.pose.position.x, msg.pose.position.y)
-                next_waypoint = (self.waypoints[self.current_waypoint_index + 1].position.x, self.waypoints[self.current_waypoint_index + 1].position.y)
+                current_waypoint = (round(msg.pose.position.x, 5), round(msg.pose.position.y, 5))
+                next_waypoint = (round(self.waypoints[self.current_waypoint_index + 1].position.x, 5), round(self.waypoints[self.current_waypoint_index + 1].position.y, 5))
                 distance_to_waypoint = math.sqrt((next_waypoint[0] - current_waypoint[0]) ** 2 + (next_waypoint[1] - current_waypoint[1]) ** 2)
                 
 
