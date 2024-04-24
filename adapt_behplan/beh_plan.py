@@ -11,7 +11,7 @@ class Behplan(Node):
 
         # Publisher setup
         self.publisher_cmd_vel = self.create_publisher(Twist, '/act_cmd', 10)
-        timer_period = 0.1  # seconds
+        timer_period = 0.025  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
 
         # Subscriber setup
