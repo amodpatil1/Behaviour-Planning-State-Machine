@@ -43,7 +43,7 @@ class Behplan(Node):
         
             if distance <= range: 
                 twist_msg.linear.x = 0.0  # Stop the vehicle
-                twist_msg.angular.z = -0.5
+                twist_msg.angular.z = 0.0
                 print(self.current_location)
                 self.get_logger().info('the vehicle has stopped with speed: %f and steering: %f' % (twist_msg.linear.x, twist_msg.angular.z))
 
@@ -55,11 +55,11 @@ class Behplan(Node):
                 else:    
                     if self.current_waypoint_index <= 5:
                         twist_msg.linear.x = 1.5  # Accelerate
-                        twist_msg.angular.z = -0.5
+                        twist_msg.angular.z = 0.0
                     else:
                 # Decelerate after reaching waypoint 5
                         twist_msg.linear.x = max(0.0, 2.0 - (self.current_waypoint_index) * 0.2)
-                        twist_msg.angular.z = -0.5 
+                        twist_msg.angular.z = 0.0 
                         self.get_logger().info('the vehicle has started to decelerate')
 
             self.publisher_cmd_vel.publish(twist_msg)
