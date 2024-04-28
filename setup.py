@@ -21,6 +21,7 @@ setup(
     entry_points={
         'console_scripts': [
               'beh_node = adapt_behplan.beh_plan:main',
+              'planner = adapt_behplan.beh_planner:main'
         ],
     },
 )
