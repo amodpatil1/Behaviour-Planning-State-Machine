@@ -107,7 +107,7 @@ class CarBehaviour(Node):
             yaw_difference = abs(target_yaw - curr_yaw)
 
             if yaw_difference > 2.0:
-                self.angular_vel = yaw_difference
+                self.angular_vel = yaw_difference * 0.3
                 self.get_logger().info('Correcting steering angle: %f' % (self.angular_vel))
                 return self.angular_vel
 
