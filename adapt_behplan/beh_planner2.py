@@ -15,7 +15,7 @@ class CarBehaviour(Node):
         self.subscription_loc = self.create_subscription(PoseStamped, '/loc_pose', self.veh_loc, 10)
 
         # Publisher setup
-        self.cmd_vel = self.create_publisher(Twist, '/act_cmd', 1)
+        self.cmd_vel = self.create_publisher(Twist, '/cmd_vel', 1)
         timer_period = 0.1  # seconds
         self.timer = self.create_timer(timer_period, self.twist_callback)
 
@@ -93,29 +93,29 @@ class CarBehaviour(Node):
         self.curr_yaw = math.degrees(msg.z)
         self.get_logger().info('yaw angle : %f' % (self.curr_yaw))
 
+    
     def steering_calc(self, curr_yaw):
-        if self.curr_way_idx < len(self.waypoints)-1:
+        target_yaw = 90.0  
 
-            #self.next_waypoint = (self.waypoints[self.curr_way_idx + 1].position.x, self.waypoints[self.curr_way_idx + 1].position.y)
+        if self.curr_way_idx < len(self.waypoints) - 1:
             self.get_logger().info('Current yaw angle: %f' % (curr_yaw))
 
-            if math.isclose(curr_yaw, -90.0, abs_tol=0.5):
-                self.get_logger().info('no deviation')
-                return 0.0 
-  
-            if 0.0 < curr_yaw < -90.0:
-                self.dev_angle = 90.0 - abs(curr_yaw)
-                self.angular_vel =  self.dev_angle
-                self.get_logger().info('steering angle: %f' % (self.angular_vel))
+            if math.isclose(curr_yaw, target_yaw, abs_tol=2.0):
+                self.get_logger().info('Driving straight')
+                return 0.0
+            
+            yaw_difference = abs(target_yaw - curr_yaw)
+
+            if yaw_difference > 2.0:
+                self.angular_vel = yaw_difference
+                self.get_logger().info('Correcting steering angle: %f' % (self.angular_vel))
                 return self.angular_vel
 
-            if -90.0 < curr_yaw < -180.0:
-                self.dev_angle = abs(curr_yaw) - 90.0
-                self.angular_vel = -self.dev_angle
-                self.get_logger().info('steering angle: %f' % (self.angular_vel))
-                return self.angular_vel   
-            self.get_logger().info('No action taken, defaulting to 0.0 angular velocity')
+            self.get_logger().info('Resetting steering angle to 0.0')
             return 0.0
+
+        self.get_logger().info('No action taken, defaulting to 0.0 angular velocity')
+        return 0.0
 
   
     def vicinity_check(self):
