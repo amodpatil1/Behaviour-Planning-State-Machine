@@ -15,7 +15,7 @@ class CarBehaviour(Node):
         self.subscription_loc = self.create_subscription(PoseStamped, '/loc_pose', self.veh_loc, 10)
 
         # Publisher setup
-        self.cmd_vel = self.create_publisher(Twist, '/cmd_vel', 5)
+        self.act_cmd = self.create_publisher(Twist, '/act_cmd', 5)
         timer_period = 0.025  # seconds
         self.timer = self.create_timer(timer_period, self.twist_callback)
 
