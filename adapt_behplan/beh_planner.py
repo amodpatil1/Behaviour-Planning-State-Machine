@@ -15,8 +15,8 @@ class CarBehaviour(Node):
         self.subscription_loc = self.create_subscription(PoseStamped, '/loc_pose', self.veh_loc, 10)
 
         # Publisher setup
-        self.cmd_vel = self.create_publisher(Twist, '/act_cmd', 1)
-        timer_period = 0.1  # seconds
+        self.cmd_vel = self.create_publisher(Twist, '/cmd_vel', 5)
+        timer_period = 0.025  # seconds
         self.timer = self.create_timer(timer_period, self.twist_callback)
 
 
@@ -42,23 +42,20 @@ class CarBehaviour(Node):
                 msg.linear.x = 0.00
                 msg.angular.z = float(self.steering_calc(self.curr_yaw))
                 self.get_logger().info('linear vel: %f, angular vel: %f' % (msg.linear.x, msg.angular.z))
+                self.get_logger().error('first if')
 
-            if vehicle_stat == 'on_route':
+            if vehicle_stat == 'on_route' and self.stop_command(self.dist_to_stop) == False:
                 msg.linear.x = 1.0
                 msg.angular.z = float(self.steering_calc(self.curr_yaw))
-                self.get_logger().info('linear vel: %f, angular vel: %f' % (msg.linear.x, msg.angular.z))
-                self.cmd_vel.publish(msg)  
+                self.get_logger().info('linear vel: %f, angular vel: %f' % (msg.linear.x, msg.angular.z)) 
+                self.get_logger().error('second if')
+
             if vehicle_stat == 'off route':
                 msg.linear.x = 0.000
                 msg.angular.z = float(self.steering_calc(self.curr_yaw))
                 self.get_logger().info('linear vel: %f, angular vel: %f' % (msg.linear.x, msg.angular.z))
-            else:    
-                msg.linear.x = 0.000
-                msg.angular.z = float(self.steering_calc(self.curr_yaw))
-                self.get_logger().info('linear vel: %f, angular vel: %f' % (msg.linear.x, msg.angular.z))
-                self.cmd_vel.publish(msg)   
-
-             
+                self.get_logger().error('third if')
+            self.cmd_vel.publish(msg)  
         self.waypoint_increment()  
         
     def route_callback(self, msg):
@@ -80,7 +77,7 @@ class CarBehaviour(Node):
         
     
     def stop_command(self, close):    
-        if 0 < close < 2:
+        if 0 < close < 0.5:
             self.get_logger().info('Stopping the vehicle as it is close to the final destination')
             return True
 
@@ -103,17 +100,18 @@ class CarBehaviour(Node):
                 self.get_logger().info('no deviation')
                 return 0.0 
   
-            if 0.0 < curr_yaw < -90.0:
+            elif 0.0 > curr_yaw > -90.0:
                 self.dev_angle = 90.0 - abs(curr_yaw)
-                self.angular_vel =  self.dev_angle
+                self.angular_vel =  self.dev_angle * 0.3
                 self.get_logger().info('steering angle: %f' % (self.angular_vel))
                 return self.angular_vel
 
-            if -90.0 < curr_yaw < -180.0:
+            elif -90.0 > curr_yaw > -180.0:
                 self.dev_angle = abs(curr_yaw) - 90.0
-                self.angular_vel = -self.dev_angle
+                self.angular_vel = -self.dev_angle * 0.3
                 self.get_logger().info('steering angle: %f' % (self.angular_vel))
                 return self.angular_vel   
+            
             self.get_logger().info('No action taken, defaulting to 0.0 angular velocity')
             return 0.0
 
@@ -140,6 +138,7 @@ class CarBehaviour(Node):
                                                                              self.waypoints[self.curr_way_idx + 1].position.y))
                     self.curr_way_idx += 1
                     print(self.curr_way_idx)
+                    self.get_logger().error('waypoint has been incremented') 
                 else:
                     self.get_logger().error('something went wrong')
         
