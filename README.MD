@@ -1,3 +1,4 @@
+:bulb: Maintainer `AMOD PATIL`
 ## Component Description
 Behaviour Planning integrates inputs from the Environment Model and Route Computer, determining the vehicle's path, speed, and maneuvers based on the inputs from the Environmental Model which gives the occupancy gridmap and the Route computer which Provides the optimal route towards the parking spot. After computing all the inputs, Behviour Planning outputs speed limits and maneuver commands in the form of a Twist message, which are executed by the Lateral and Longitudinal Control systems.
 | In/Out | Topic Name| Message Type | Description | 
