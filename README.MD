@@ -13,7 +13,7 @@ Behaviour Planning integrates inputs from the Environmental Model and Route Comp
 
 ## Behaviour Planning Block Diagram
 
- <img src="images/behplan.png" alt="Behaviour Planning Block Diagram" title="Behaviour Planning" width="781" height="441">
+ <img src="images/behplan.png" alt="Behaviour Planning Block Diagram" title="Behaviour Planning" width="611" height="241">
 
 
  ## Installation Instructions
