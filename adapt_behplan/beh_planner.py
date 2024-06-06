@@ -63,7 +63,7 @@ class CarBehaviour(Node):
                 msg.angular.z = float(self.steering_calc(self.curr_yaw))
                 self.get_logger().info('linear vel: %f, angular vel: %f' % (msg.linear.x, msg.angular.z))
                 self.get_logger().error('third if')
-            self.cmd_vel.publish(msg)
+            self.act_cmd.publish(msg)
 
         #call the function to incremet the waypoint after the car crosses the next waypoint      
         self.waypoint_increment()   
