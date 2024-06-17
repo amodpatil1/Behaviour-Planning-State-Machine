@@ -47,7 +47,7 @@ State 5: Park
 
 ## Behaviour Planning Block Diagram
 
- <img src="images\behplan.jpg" alt="Behaviour Planning Block Diagram" title="Behaviour Planning" width="611" height="241">
+ <img src="https://git.hs-coburg.de/ADAPT/adapt_behplan/raw/branch/main/images/behplan.jpg" alt="Behaviour Planning Block Diagram" title="Behaviour Planning" width="611" height="241">
 
 
 
