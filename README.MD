@@ -38,7 +38,7 @@ State 5: Park
 | --------- | ---------- | ---------- | ----------- |
 | Input | /traj_trigger|PoseArray| A optimum route from the vehicle's location to the parking spot | |
 | Input |/loc_pose |PoseStamped|Location of Ego Vehicle | |
-| Output |Parked |||
+| Output | ||Parked|
 
 
 ## The RQT Graph
