@@ -82,40 +82,8 @@ State 5: Park
  4. adapt_vi
  5. adapt_trajp
  6. yasmin: https://github.com/uleroboticsgroup/yasmin
+ (Note: Please install yasmin on your system before running behaviour planning node)
 
-## Installation Instructions
-
-To install the yasmin package, do follow the steps below:
-
-### Step 1: Create a worksapce
-
-Open the terminal, navigate to the worksapce and create a 'src' directory where you want to clone the repository. 
-
-```shell
-mkdir src
-```
-### Step 2: Clone the Repository
-Navigate to 'src' and follow the given command to clone the repository.
-```shell
-git clone https://github.com/uleroboticsgroup/yasmin
-```
-### Step 3: Build the Package
-After cloning the repository, navigate back to the workspace
-```shell
-cd ..
-```
-Now, build the package using **`colcon`**:
-```shell
-colcon build --packages-select yasmin
-
-colcon build --packages-select yasmin_ros
-
-colcon build --packages-select yasmin_msgs
-
-colcon build --packages-select yasmin_viewer
-
-colcon build --packages-select yasmin_demo
-```
 
  ## Installation Instructions
 
