@@ -7,43 +7,38 @@ State 1: Idle
 | In/Out | Topic Name| Message Type | Description | 
 | --------- | ---------- | ---------- | ----------- |
 | Input | /vi_start|string| Start trigger to transition into Drive State | |
-| Output |/route|Pose| A optimum route from the vehicle's location to the parking spot |
+| Output |/route|PoseArray| A optimum route from the vehicle's location to the parking spot |
 
 State 2: Drive
 
 | In/Out | Topic Name| Message Type | Description | 
 | --------- | ---------- | ---------- | ----------- |
 | Input | /route|PoseArray| A optimum route from the vehicle's location to the parking spot | |
-| Input |/complete_model |OccupancyGrid|Complete model of where the vehicle is located with respect to its environment | |
+| Input |/stop| Bool|This message is published when the node detects obstacle in its close range(forward) | |
 | Input |/loc_pose |PoseStamped|Location of Ego Vehicle | |
-| Output |/act_cmd |Twist| linear and angular velocities of the vehicle |
 
 State 3: Stop when a obstacle is detected
 
 | In/Out | Topic Name| Message Type | Description | 
 | --------- | ---------- | ---------- | ----------- |
-| Input | /route|PoseArray| A optimum route from the vehicle's location to the parking spot | |
-| Input |/complete_model |OccupancyGrid|Complete model of where the vehicle is located with respect to its environment | |
-| Input |/loc_pose |PoseStamped|Location of Ego Vehicle | |
-| Output |/act_cmd |Twist| linear and angular velocities of the vehicle |
+| Input | /stop|Bool| This message is published when the node detects obstacle in its close range(forward) | |
+| Output | ||Idle|
 
 State 4: Stop near the parking spot
 
 | In/Out | Topic Name| Message Type | Description | 
 | --------- | ---------- | ---------- | ----------- |
 | Input | /route|PoseArray| A optimum route from the vehicle's location to the parking spot | |
-| Input |/complete_model |OccupancyGrid|Complete model of where the vehicle is located with respect to its environment | |
 | Input |/loc_pose |PoseStamped|Location of Ego Vehicle | |
-| Output |/act_cmd |Twist| linear and angular velocities of the vehicle |
+| Output | ||Idle|
 
 State 5: Park
 
 | In/Out | Topic Name| Message Type | Description | 
 | --------- | ---------- | ---------- | ----------- |
-| Input | /route|PoseArray| A optimum route from the vehicle's location to the parking spot | |
-| Input |/complete_model |OccupancyGrid|Complete model of where the vehicle is located with respect to its environment | |
+| Input | /traj_trigger|PoseArray| A optimum route from the vehicle's location to the parking spot | |
 | Input |/loc_pose |PoseStamped|Location of Ego Vehicle | |
-| Output |/act_cmd |Twist| linear and angular velocities of the vehicle |
+| Output |Parked |||
 
 
 ## The RQT Graph
@@ -54,26 +49,7 @@ State 5: Park
 
  <img src="images/behplan.png" alt="Behaviour Planning Block Diagram" title="Behaviour Planning" width="611" height="241">
 
- ## Functionality
- The behaviour planning node need three inputs to run which are described below, without these topics the node will not run.:
- 1. Waypoints from the /route Topic
- 2. Vehicle location from the /loc_pose topic 
- 3. Rotation of the vehicle (yaw) from the /euler_angles topic
 
- The functions are as follows:
- 1. The veh_loc() function subscribes the vehicle's current location and the final location 
- where the car needs to head (for now we have hard coded it as we were not using spot selector Component)
- and store it a variable. This function also calculates the distance between the current location and the final location to use it as required further
- in the Node.
- 2. The route_callback() function subscribes to the PoseArray message from /route topic to store all the data as a array to be used later. the route_callback()
- necessary to make behaviour planning run.
- 3. Stop_command() returns a bool based on whether or not the car is close the destination.
- 4. Rotation_callback() it converts radian yaw into degrees to be processed further.
- 5. Steering_calc() it calculates the angular velocity so as to keep the vehicle on track since the default steering diverts the vehicle away from
- its trajectory.
- 6. Vicinity_check() returns a bool based on whether the car is on the desired lane or not
- 7. Waypoint_increment() this function takes care that after the vehicle crosses the next waypoint it increments the already set self.curr_way_idx = 0 to 1
- so it helps the vehicle to know when to stop.
 
  ## Dependencies
  1. adapt_roucomp
