@@ -185,6 +185,7 @@ Go to the given link on the web browser.
 
 http://localhost:5000/
 
-:bulb: For this module the State machine is operational accoridng to its function. The integartion of the State Machine with the system will be
+
+:bulb:  For this module the State machine is operational accoridng to its function. The integartion of the State Machine with the system will be
 operational in the next module as it requires modifications to be made in all the components through the project. The Visulaization for the State Machine will 
 is under development.
