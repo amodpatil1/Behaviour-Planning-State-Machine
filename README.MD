@@ -1,45 +1,144 @@
-:bulb: Maintainer `AMOD PATIL & ANISH PATIL`
+:bulb: Maintainer `AMOD PATIL'
 ## Component Description
-Behaviour Planning integrates inputs from the Environment Model and Route Computer, determining the vehicle's path, speed, and maneuvers based on the inputs from the Environmental Model which gives the occupancy gridmap and the Route computer which Provides the optimal route towards the parking spot. After computing all the inputs, Behviour Planning outputs speed limits and maneuver commands in the form of a Twist message, which are executed by the Lateral and Longitudinal Control systems.
+Behaviour Planning is state machine which helps the Ego Vehicle to change states based on the situations and types of inputs it receives. The behaviour planning has 5 states Idle, Drive, Stop when a obstacle is detected, Stop near the parking, Park. The Ego vehicle is in idle state where it receives the 'vi_start' trigger from the adapt_vi from which it transition into drive state which has 3 outcomes first is Drive, second is Stop near parking spot, third is Stop when a obstacle is detected. The Drive outcome is achieved when the adapt_roucomp has published a 'route'. Once Ego-vehicle is driving if the adapt_envmod publishes the 'stop' the Ego-vehicle will transition into the Stop when a obstacle is detected. Once the Ego-vehicle has reached the location near the parking spot which is calculated using the current pose which is received from adapt_loc and the goal pose of the path which is received from adapt_roucomp. Once the Ego Vehicle is at the goal pose of the route Park state is triggered where adapt_trajp is set to choose the Park trajectory to park the vehicle. Once the vehicle is parked it returns to idle state.
+
+State 1: Idle
+
+| In/Out | Topic Name| Message Type | Description | 
+| --------- | ---------- | ---------- | ----------- |
+| Input | /vi_start|string| Start trigger to transition into Drive State | |
+| Output |/route|PoseArray| A optimum route from the vehicle's location to the parking spot |
+
+State 2: Drive
+
 | In/Out | Topic Name| Message Type | Description | 
 | --------- | ---------- | ---------- | ----------- |
 | Input | /route|PoseArray| A optimum route from the vehicle's location to the parking spot | |
-| Input |/complete_model |OccupancyGrid|Complete model of where the vehicle is located with respect to its environment | |
+| Input |/stop| Bool|This message is published when the node detects obstacle in its close range(forward) | |
 | Input |/loc_pose |PoseStamped|Location of Ego Vehicle | |
-| Output |/act_cmd |Twist| linear and angular velocities of the vehicle |
+
+State 3: Stop when a obstacle is detected
+
+| In/Out | Topic Name| Message Type | Description | 
+| --------- | ---------- | ---------- | ----------- |
+| Input | /stop|Bool| This message is published when the node detects obstacle in its close range(forward) | |
+| Output ||Idle|
+
+State 4: Stop near the parking spot
+
+| In/Out | Topic Name| Message Type | Description | 
+| --------- | ---------- | ---------- | ----------- |
+| Input | /route|PoseArray| A optimum route from the vehicle's location to the parking spot | |
+| Input |/loc_pose |PoseStamped|Location of Ego Vehicle | |
+| Output ||Idle|
+
+State 5: Park
+
+| In/Out | Topic Name| Message Type | Description | 
+| --------- | ---------- | ---------- | ----------- |
+| Input | /traj_trigger|PoseArray| A optimum route from the vehicle's location to the parking spot | |
+| Input |/loc_pose |PoseStamped|Location of Ego Vehicle | |
+| Output ||Parked|
+
 
 ## The RQT Graph
 
-<img src="images/behpl.png" alt="Behaviour Planning Block Diagram" title="Behaviour Planning" width="881" height="350">
+<img src="images/behpl.png" alt="Behaviour Planning Block Diagram" title="Behaviour Planning" width="1810" height="415">
 
-## Behaviour Planning Block Diagram
+## Behaviour Planning Block Diagram 
+<img src="images/behplan.jpg" alt="Behaviour Planning Block Diagram" title="Behaviour Planning" width="1734" height="901">
 
- <img src="images/behplan.png" alt="Behaviour Planning Block Diagram" title="Behaviour Planning" width="611" height="241">
 
- ## Functionality
- The behaviour planning node need three inputs to run which are described below, without these topics the node will not run.:
- 1. Waypoints from the /route Topic
- 2. Vehicle location from the /loc_pose topic 
- 3. Rotation of the vehicle (yaw) from the /euler_angles topic
 
- The functions are as follows:
- 1. The veh_loc() function subscribes the vehicle's current location and the final location 
- where the car needs to head (for now we have hard coded it as we were not using spot selector Component)
- and store it a variable. This function also calculates the distance between the current location and the final location to use it as required further
- in the Node.
- 2. The route_callback() function subscribes to the PoseArray message from /route topic to store all the data as a array to be used later. the route_callback()
- necessary to make behaviour planning run.
- 3. Stop_command() returns a bool based on whether or not the car is close the destination.
- 4. Rotation_callback() it converts radian yaw into degrees to be processed further.
- 5. Steering_calc() it calculates the angular velocity so as to keep the vehicle on track since the default steering diverts the vehicle away from
- its trajectory.
- 6. Vicinity_check() returns a bool based on whether the car is on the desired lane or not
- 7. Waypoint_increment() this function takes care that after the vehicle crosses the next waypoint it increments the already set self.curr_way_idx = 0 to 1
- so it helps the vehicle to know when to stop.
+
+## Functionality
+The behaviour Planning act as the brain of the Ego-vehicle where it receives several inputs from various components and based on the inputs received it triggers the specific functions. It has 5 States and particular state has their own outcomes.
+1. Idle 
+2. Drive
+3. Stop when an obstacle is detected
+4. Stop near the parking spot
+5. Park
+
+There a few components are continuously publishing through out the entire process of the vehicle.
+adapt_envmod
+adapt_loc
+ 
+**State: Idle**
+
+
+Components  
+
+adapt_loc
+
+adapt_envmod
+
+adapt_vi
+
+ The idle state has only one outcome which is drive state. In the idle state the vehicle is continuously scanning for the object in front via adapt_envmod and the adapt_loc is being used to know the location of the Ego-vehicle. The behaviour planning will listen to the topic 'vi_start' from adapt_vi and once 'vi_start is heard the Ego-vehicle will transition into Drive state. 
+
+**State: Drive**
+
+
+Components 
+adapt_loc
+adapt_envmod
+adapt_roucomp
+adapt_trajp
+
+The Drive state has three outcomes Drive, Stop when an obstacle is detected, Stop near the parking spot. In the Drive state when topic 'vi_start' is heard it triggers the adapt_roucomp which publishes a topic '/route' which is a PoseArray to transition into the drive. Once the Ego-vehicle is in Drive it continuously scan for obstacle in its path, this is done via adapt_envmod and if a obstacle is detected the adapt_envmod sends a Bool message in the topic '/stop' which transition the Ego-vehicle into stop when an obstacle is detected state and the Ego-vehicle goes into the Idle state. If there is no obstacle in the path of the Ego-vehicle then stays in the Drive and it calculates the distance to goal pose using its current position received from the adapt_loc and once it reaches the goal pose of the '/route' it transition the vehicle into the Stop near the parking spot.
+
+
+**Stop when an obstacle is a detected State**
+
+
+Components 
+
+adapt_loc
+
+adapt_envmod
+
+The Stop when an obstacle has one outcome which transition the Ego-vehicle into the Idle State. When an obstacle detected in the /route via the adapt_envmod it publishes a '/stop' topic which stop the Ego-vehicle and transitions the Ego-vehicle into the Idle state. 
+
+**State: Stop near the parking spot.**
+
+
+Components 
+
+adapt_loc
+
+adapt_envmod
+
+adapt_trajp
+
+The Stop near the Parking spot has one outcome which transition the Ego-vehicle into Park State. When the Ego-vehicle reaches the goal pose of the '/route' received from the adapt_roucomp which is calculated using an distance formula where the current location of the Ego-vehicle is received via the topic'/loc_pose' from the adapt_loc and the goal pose of the '/route' received from the adapt_roucomp and once the Ego-vehicle reaches the goal pose of the '/route' it triggers the Ego-vehicle to transition into Park state.
+
+**State: Park**
+
+
+Components
+
+adapt_loc
+
+adapt_envmod
+
+adapt_trajp
+
+The Park state has three outcomes Park forward, Park reverse and Parked. When the Ego-vehicle reaches the goal pose of the '/route' it triggers the adapt_trajp to choose /trajpf which is the trajectory for Driving forward in Parking State which is the first outcome Park forward, once Driving forward trajectory is complete, the adapt_trajp changes to '/trajpr' which drives the Ego-vehicle in the reverse into the parking Spot, which is the second outcome Park reverse. Once the Ego-vehicle is Parked in the Parking Spot it outcomes the third outcome Parked this done using a distance formula which use '/loc_pose' from adapt_loc and Parking spot location received from adapt_loc.
+
+
 
  ## Dependencies
  1. adapt_roucomp
  2. adapt_loc
+ 3. adapt_envmod
+ 4. adapt_vi
+ 5. adapt_trajp
+ 6. yasmin: https://github.com/uleroboticsgroup/yasmin
+(Note: Please install yasmin on your system before running behaviour planning node)
+
+
+
+
 
  ## Installation Instructions
 
@@ -74,6 +173,14 @@ source install/setup.bash
 ### Step 5: Run the Node
 before you run the node make sure to start the adapt_roucomp and adapt_loc components
 You can now launch the Behaviour Planning node:
-The entry point for Behaviour Planning is **`planner`**.
+The entry point for Behaviour Planning is **`behstate`**.
 ```shell
-ros2 run adapt_behplan planner
+ros2 run adapt_behplan behstate
+
+
+## Visulaization Instructions
+`ros2 run yasmin_viewer yasmin_viewer_node`
+
+Go to the given link on the web browser.
+
+http://localhost:5000/
