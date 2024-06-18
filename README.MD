@@ -46,7 +46,7 @@ State 5: Park
 <img src="images/behpl.png" alt="Behaviour Planning Block Diagram" title="Behaviour Planning" width="1810" height="415">
 
 ## Behaviour Planning Block Diagram 
-<img src="images\behplan.jpg" alt="Behaviour Planning Block Diagram" title="Behaviour Planning" width="1734" height="901">
+<img src="images/behplan.jpg" alt="Behaviour Planning Block Diagram" title="Behaviour Planning" width="1734" height="901">
 
 
 
