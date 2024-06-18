@@ -67,8 +67,11 @@ Idle State
 
 
 Components  
+
 adapt_loc
+
 adapt_envmod
+
 adapt_vi
 
  The idle state has only one outcome which is drive state. In the idle state the vehicle is continuously scanning for the object in front via adapt_envmod and the adapt_loc is being used to know the location of the Ego-vehicle. The behaviour planning will listen to the topic 'vi_start' from adapt_vi and once 'vi_start is heard the Ego-vehicle will transition into Drive state. 
