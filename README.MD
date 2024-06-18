@@ -63,7 +63,7 @@ There a few components are continuously publishing through out the entire proces
 adapt_envmod
 adapt_loc
  
-Idle State
+**State: Idle**
 
 
 Components  
@@ -76,7 +76,7 @@ adapt_vi
 
  The idle state has only one outcome which is drive state. In the idle state the vehicle is continuously scanning for the object in front via adapt_envmod and the adapt_loc is being used to know the location of the Ego-vehicle. The behaviour planning will listen to the topic 'vi_start' from adapt_vi and once 'vi_start is heard the Ego-vehicle will transition into Drive state. 
 
-Drive State
+**State: Drive**
 
 
 Components 
@@ -88,7 +88,7 @@ adapt_trajp
 The Drive state has three outcomes Drive, Stop when an obstacle is detected, Stop near the parking spot. In the Drive state when topic 'vi_start' is heard it triggers the adapt_roucomp which publishes a topic '/route' which is a PoseArray to transition into the drive. Once the Ego-vehicle is in Drive it continuously scan for obstacle in its path, this is done via adapt_envmod and if a obstacle is detected the adapt_envmod sends a Bool message in the topic '/stop' which transition the Ego-vehicle into stop when an obstacle is detected state and the Ego-vehicle goes into the Idle state. If there is no obstacle in the path of the Ego-vehicle then stays in the Drive and it calculates the distance to goal pose using its current position received from the adapt_loc and once it reaches the goal pose of the '/route' it transition the vehicle into the Stop near the parking spot.
 
 
-Stop when an obstacle is a detected State
+**Stop when an obstacle is a detected State**
 
 
 Components 
@@ -99,7 +99,7 @@ adapt_envmod
 
 The Stop when an obstacle has one outcome which transition the Ego-vehicle into the Idle State. When an obstacle detected in the /route via the adapt_envmod it publishes a '/stop' topic which stop the Ego-vehicle and transitions the Ego-vehicle into the Idle state. 
 
-Stop near the parking spot State.
+**State: Stop near the parking spot.**
 
 
 Components 
@@ -112,7 +112,7 @@ adapt_trajp
 
 The Stop near the Parking spot has one outcome which transition the Ego-vehicle into Park State. When the Ego-vehicle reaches the goal pose of the '/route' received from the adapt_roucomp which is calculated using an distance formula where the current location of the Ego-vehicle is received via the topic'/loc_pose' from the adapt_loc and the goal pose of the '/route' received from the adapt_roucomp and once the Ego-vehicle reaches the goal pose of the '/route' it triggers the Ego-vehicle to transition into Park state.
 
-Park State
+**State: Park**
 
 
 Components
