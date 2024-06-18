@@ -176,9 +176,10 @@ You can now launch the Behaviour Planning node:
 The entry point for Behaviour Planning is **`behstate`**.
 ```shell
 ros2 run adapt_behplan behstate
-
+```
 
 ## Visulaization Instructions
+
 `ros2 run yasmin_viewer yasmin_viewer_node`
 
 Go to the given link on the web browser.
