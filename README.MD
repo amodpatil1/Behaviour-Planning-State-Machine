@@ -22,7 +22,7 @@ State 3: Stop when a obstacle is detected
 | In/Out | Topic Name| Message Type | Description | 
 | --------- | ---------- | ---------- | ----------- |
 | Input | /stop|Bool| This message is published when the node detects obstacle in its close range(forward) | |
-| Output | ||Idle|
+| Output ||Idle|
 
 State 4: Stop near the parking spot
 
@@ -30,7 +30,7 @@ State 4: Stop near the parking spot
 | --------- | ---------- | ---------- | ----------- |
 | Input | /route|PoseArray| A optimum route from the vehicle's location to the parking spot | |
 | Input |/loc_pose |PoseStamped|Location of Ego Vehicle | |
-| Output | ||Idle|
+| Output ||Idle|
 
 State 5: Park
 
@@ -38,16 +38,20 @@ State 5: Park
 | --------- | ---------- | ---------- | ----------- |
 | Input | /traj_trigger|PoseArray| A optimum route from the vehicle's location to the parking spot | |
 | Input |/loc_pose |PoseStamped|Location of Ego Vehicle | |
-| Output | ||Parked|
+| Output ||Parked|
 
 
 ## The RQT Graph
 
-<img src="images/behpl.png" alt="Behaviour Planning Block Diagram" title="Behaviour Planning" width="881" height="350">
+<img src="images/behpl.png" alt="Behaviour Planning Block Diagram" title="Behaviour Planning" width="1810" height="415">
 
 ## Behaviour Planning Block Diagram
 
+<<<<<<< HEAD
  <img src="images\behplan.jpg" alt="Behaviour Planning Block Diagram" title="Behaviour Planning" width="1734" height="901">
+=======
+ <img src="https://git.hs-coburg.de/ADAPT/adapt_behplan/raw/branch/main/images/behplan.jpg" alt="Behaviour Planning Block Diagram" title="Behaviour Planning" width="850" height="850">
+>>>>>>> baae262eb88f05211d7f0ee4d3a924150c8dcc17
 
 
 
