@@ -47,7 +47,7 @@ State 5: Park
 
 ## Behaviour Planning Block Diagram
 
- <img src="images\behplan.jpg" alt="Behaviour Planning Block Diagram" title="Behaviour Planning" width="611" height="241">
+ <img src="images\behplan.jpg" alt="Behaviour Planning Block Diagram" title="Behaviour Planning" width="1734" height="901">
 
 
 
@@ -58,7 +58,7 @@ State 5: Park
  4. adapt_vi
  5. adapt_trajp
  6. yasmin: https://github.com/uleroboticsgroup/yasmin
- (Note: Please install yasmin on your system before running behaviour planning node)
+(Note: Please install yasmin on your system before running behaviour planning node)
 
 
  ## Installation Instructions
