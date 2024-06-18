@@ -43,11 +43,11 @@ State 5: Park
 
 ## The RQT Graph
 
-<img src="images/behpl.png" alt="Behaviour Planning Block Diagram" title="Behaviour Planning" width="881" height="350">
+<img src="images/behpl.png" alt="Behaviour Planning Block Diagram" title="Behaviour Planning" width="850" height="850">
 
 ## Behaviour Planning Block Diagram
 
- <img src="https://git.hs-coburg.de/ADAPT/adapt_behplan/raw/branch/main/images/behplan.jpg" alt="Behaviour Planning Block Diagram" title="Behaviour Planning" width="611" height="241">
+ <img src="https://git.hs-coburg.de/ADAPT/adapt_behplan/raw/branch/main/images/behplan.jpg" alt="Behaviour Planning Block Diagram" title="Behaviour Planning" width="850" height="850">
 
 
 
