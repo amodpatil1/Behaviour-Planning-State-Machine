@@ -38,6 +38,7 @@ class FSMNode(Node):
         self.create_subscription(Pose, '/route', self.route_callback, 10)
         self.create_subscription(Bool, '/trajpf', self.trajpf_callback, 10)
         self.create_subscription(Bool, '/trajpr', self.trajpr_callback, 10)
+        print("init")
 
     def vi_start_callback(self, msg):
         self.blackboard.adapt_vi_start_trigger = msg.data
@@ -216,8 +217,8 @@ def main():
     YasminViewerPub("YASMIN_DEMO", sm)
 
     # Set the start trigger to True after a delay to simulate an external trigger
-    time.sleep(2)
-    blackboard.adapt_vi_start_trigger = True
+    #time.sleep(2)
+    #blackboard.adapt_vi_start_trigger = True
 
     # execute FSM
     import threading
@@ -237,4 +238,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    kjljlmain()
