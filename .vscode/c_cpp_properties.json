@@ -1,0 +1,34 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/af/adapt_main/install/yasmin_viewer/include/**",
+        "/home/af/adapt_main/install/yasmin_ros/include/**",
+        "/home/af/adapt_main/install/yasmin_msgs/include/**",
+        "/home/af/adapt_main/install/yasmin/include/**",
+        "/home/af/adapt_main/install/v2x/include/**",
+        "/home/af/adapt_main/install/mocap_msgs/include/**",
+        "/home/af/adapt_main/install/adapt_msgs/include/**",
+        "/home/af/ros2_ws/install/v2x/include/**",
+        "/home/af/ros2_ws/install/turtlesim/include/**",
+        "/home/af/ros2_ws/install/medi_msgs/include/**",
+        "/home/af/ros2_ws/install/marvelmind_interfaces/include/**",
+        "/opt/ros/foxy/include/**",
+        "/home/af/adapt_main/src/yasmin/yasmin/include/**",
+        "/home/af/adapt_main/src/yasmin/yasmin_ros/include/**",
+        "/home/af/adapt_main/src/yasmin/yasmin_viewer/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-arm64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}

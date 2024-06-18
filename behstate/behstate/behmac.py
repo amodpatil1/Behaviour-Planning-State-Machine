@@ -15,25 +15,60 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import time
 import math
 import rclpy
+from rclpy.node import Node
+from std_msgs.msg import Bool
+from geometry_msgs.msg import Pose
 from yasmin import State
 from yasmin import Blackboard
 from yasmin import StateMachine
 from yasmin_viewer import YasminViewerPub
 
 
+class FSMNode(Node):
+    def __init__(self, blackboard):
+        super().__init__('fsm_node')
+        self.blackboard = blackboard
+
+        self.create_subscription(Bool, '/vi_start', self.vi_start_callback, 10)
+        self.create_subscription(Pose, '/loc_pose', self.loc_pose_callback, 10)
+        self.create_subscription(Bool, '/stop', self.stop_callback, 10)
+        self.create_subscription(Pose, '/route', self.route_callback, 10)
+        self.create_subscription(Bool, '/trajpf', self.trajpf_callback, 10)
+        self.create_subscription(Bool, '/trajpr', self.trajpr_callback, 10)
+
+    def vi_start_callback(self, msg):
+        self.blackboard.adapt_vi_start_trigger = msg.data
+
+    def loc_pose_callback(self, msg):
+        self.blackboard.adapt_loc = (msg.position.x, msg.position.y)
+
+    def stop_callback(self, msg):
+        self.blackboard.adapt_envmod = msg.data
+
+    def route_callback(self, msg):
+        self.blackboard.adapt_roucomp = (msg.position.x, msg.position.y)
+
+    def trajpf_callback(self, msg):
+        self.blackboard.trajpf_complete = msg.data
+
+    def trajpr_callback(self, msg):
+        self.blackboard.trajpr_complete = msg.data
+
+
 # define state Idle
 class IdleState(State):
     def __init__(self) -> None:
         super().__init__(["driving_state"])
+        self.logger = rclpy.logging.get_logger('IdleState')
 
     def execute(self, blackboard: Blackboard) -> str:
         print("Executing state IDLE")
-        # Simulate waiting for start trigger from adapt_vi
+        # Wait for start trigger from adapt_vi
         while not blackboard.adapt_vi_start_trigger:
+            self.logger.info('going to sleep')
             time.sleep(0.1)
         return "driving_state"
 
@@ -47,7 +82,7 @@ class DrivingState(State):
         print("Executing state DRIVING")
         time.sleep(3)
 
-        # Dummy condition checks
+        # Check for obstacle detection
         if blackboard.adapt_envmod:
             print("Obstacle detected by adapt_envmod")
             return "stop_obstacle"
@@ -94,13 +129,19 @@ class StopNearParkState(State):
 # define state Park
 class ParkState(State):
     def __init__(self) -> None:
-        super().__init__(["idle"])
+        super().__init__(["parked"])
 
     def execute(self, blackboard: Blackboard) -> str:
         print("Executing state PARK")
-        # Simulate parking process
-        time.sleep(2)
-        return "idle"
+
+        while not blackboard.trajpf_complete:
+            time.sleep(0.1)
+       
+        while not blackboard.trajpr_complete:
+            time.sleep(0.1)
+
+        print("Vehicle parked")
+        return "parked"
 
 
 # main
@@ -126,6 +167,11 @@ def main():
     blackboard.adapt_trajp = False  # Initialize adapt_trajp
     blackboard.adapt_envmod = False  # Initialize adapt_envmod as no obstacle detected
     blackboard.parking_threshold = 1.0  # Distance threshold for parking spot detection
+    blackboard.trajpf_complete = False  # Initialize trajpf_complete
+    blackboard.trajpr_complete = False  # Initialize trajpr_complete
+
+    # init ROS 2 node
+    fsm_node = FSMNode(blackboard)
 
     # add states
     sm.add_state(
@@ -162,7 +208,7 @@ def main():
         "PARK",
         ParkState(),
         transitions={
-            "idle": "IDLE"
+            "parked": "IDLE"
         }
     )
 
@@ -173,18 +219,22 @@ def main():
     time.sleep(2)
     blackboard.adapt_vi_start_trigger = True
 
-    # Simulate vehicle driving and detecting an obstacle and nearing parking spot
-    time.sleep(5)
-    blackboard.adapt_envmod = True  # Simulate obstacle detection
-
     # execute FSM
-    outcome = sm.execute(blackboard)
-    print(outcome)
+    import threading
+    def execute_fsm():
+        outcome = sm.execute(blackboard)
+        print(outcome)
 
-    # shutdown ROS 2
+    fsm_thread = threading.Thread(target=execute_fsm)
+    fsm_thread.start()
+
+    # Spin ROS 2 node
+    rclpy.spin(fsm_node)
+
+    # Shutdown
+    fsm_thread.join()
     rclpy.shutdown()
 
 
 if __name__ == "__main__":
     main()
-
