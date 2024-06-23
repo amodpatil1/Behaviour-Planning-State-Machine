@@ -5,10 +5,9 @@ Behaviour Planning is state machine which helps the Ego Vehicle to change states
 State 1: Idle
 
 | In/Out |Component | Topic Name | Message Type | 
-| --------- | ---------- | ---------- | ----------- |
 | Input | /vi_start|string| Start trigger to transition into Drive State | |
 | Trigger | /vi_start|string| Start trigger to transition into Drive State | |
-| Output |                                                              Drive|
+| Outcome |Drive|
 
 State 2: Drive
 
@@ -16,7 +15,7 @@ State 2: Drive
 | --------- | ---------- | ---------- | ----------- |
 | Input | /vi_start|string| Start trigger to transition into Drive State | |
 | Trigger | /vi_start|string| Start trigger to transition into Drive State | |
-| Output |/route|PoseArray| A optimum route from the vehicle's location to the parking spot |
+| Outcome |/route|PoseArray| A optimum route from the vehicle's location to the parking spot |
 
 State 3: Stop when a obstacle is detected
 
@@ -24,7 +23,7 @@ State 3: Stop when a obstacle is detected
 | --------- | ---------- | ---------- | ----------- |
 | Input | /vi_start|string| Start trigger to transition into Drive State | |
 | Trigger | /vi_start|string| Start trigger to transition into Drive State | |
-| Output |/route|PoseArray| A optimum route from the vehicle's location to the parking spot |
+| Outcome |/route|PoseArray| A optimum route from the vehicle's location to the parking spot |
 
 State 4: Stop near the parking spot
 
@@ -32,7 +31,7 @@ State 4: Stop near the parking spot
 | --------- | ---------- | ---------- | ----------- |
 | Input | /vi_start|string| Start trigger to transition into Drive State | |
 | Trigger | /vi_start|string| Start trigger to transition into Drive State | |
-| Output |/route|PoseArray| A optimum route from the vehicle's location to the parking spot |
+| Outcome |/route|PoseArray| A optimum route from the vehicle's location to the parking spot |
 
 State 5: Park
 
@@ -40,7 +39,7 @@ State 5: Park
 | --------- | ---------- | ---------- | ----------- |
 | Input | /vi_start|string| Start trigger to transition into Drive State | |
 | Trigger | /vi_start|string| Start trigger to transition into Drive State | |
-| Output |/route|PoseArray| A optimum route from the vehicle's location to the parking spot |
+| Outcome|/route|PoseArray| A optimum route from the vehicle's location to the parking spot |
 
 
 ## The RQT Graph
