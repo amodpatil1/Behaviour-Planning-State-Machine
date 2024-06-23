@@ -8,7 +8,7 @@ State 1: Idle
 | --------- | ---------- | ---------- | ----------- |
 | Input | /vi_start|string| Start trigger to transition into Drive State | |
 | Trigger | /vi_start|string| Start trigger to transition into Drive State | |
-| Output |Drive|
+| Output |                                                              Drive|
 
 State 2: Drive
 
