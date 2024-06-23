@@ -20,29 +20,47 @@ State 2: Drive
 
 **Outcome 1**: Drive
 
-State 3: Stop when a obstacle is detected
+| Inputs/Trigger |Component | Topic Name | Message Type | 
+| --------- | ---------- | ---------- | ----------- |
+| Input | adapt_envmod|/stop| Bool | |
+| Trigger |  adapt_envmod|/stop| Bool | |
+
+**Outcome 2**: Stop when an obstacle is detected.
 
 | Inputs/Trigger |Component | Topic Name | Message Type | 
 | --------- | ---------- | ---------- | ----------- |
-| Input | /vi_start|string| Start trigger to transition into Drive State | |
-| Trigger | /vi_start|string| Start trigger to transition into Drive State | |
-| Outcome |/route|PoseArray| A optimum route from the vehicle's location to the parking spot |
+| Input | adapt_loc|/loc_pose| PoseStamped | |
+| Trigger | adapt_loc|/loc_pose| PoseStamped | |
+
+**Outcome 3**: Stop near the parking spot.
+
+
+State 3: Stop when an obstacle is detected
+
+| Inputs/Trigger |Component | Topic Name | Message Type | 
+| --------- | ---------- | ---------- | ----------- |
+| Input | adapt_envmod|/stop| Bool | |
+| Trigger |  adapt_envmod|/stop| Bool | |
+
+**Outcome **: Stop when an obstacle is detected.
 
 State 4: Stop near the parking spot
 
 | Inputs/Trigger |Component | Topic Name | Message Type | 
 | --------- | ---------- | ---------- | ----------- |
-| Input | /vi_start|string| Start trigger to transition into Drive State | |
-| Trigger | /vi_start|string| Start trigger to transition into Drive State | |
-| Outcome |/route|PoseArray| A optimum route from the vehicle's location to the parking spot |
+| Input | adapt_loc|/loc_pose| PoseStamped | |
+| Trigger | adapt_loc|/loc_pose| PoseStamped | |
+
+**Outcome **: Park.
 
 State 5: Park
 
 | Inputs/Trigger |Component | Topic Name | Message Type | 
 | --------- | ---------- | ---------- | ----------- |
-| Input | /vi_start|string| Start trigger to transition into Drive State | |
-| Trigger | /vi_start|string| Start trigger to transition into Drive State | |
-| Outcome|/route|PoseArray| A optimum route from the vehicle's location to the parking spot |
+| Input | adapt_loc|/loc_pose| PoseStamped | |
+| Trigger | adapt_trajp|/trajpf| PoseStamped | |
+
+**Outcome **: Parked.
 
 
 ## The RQT Graph
