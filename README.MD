@@ -4,7 +4,7 @@ Behaviour Planning is state machine which helps the Ego Vehicle to change states
 
 State 1: Idle
 
-| In/Out |Component | Topic Name | Message Type |
+| Inputs/Trigger |Component | Topic Name | Message Type |
 | --------- | ---------- | ---------- | ----------- |
 | Input | adapt_vi|/vi_start| Bool | |
 | Trigger | adapt_vi|/vi_start| Bool | | 
@@ -13,15 +13,16 @@ State 1: Idle
 
 State 2: Drive
 
-| In/Out |Component | Topic Name | Message Type | 
+| Inputs/Trigger |Component | Topic Name | Message Type | 
 | --------- | ---------- | ---------- | ----------- |
-| Input | /vi_start|string| Start trigger to transition into Drive State | |
-| Trigger | /vi_start|string| Start trigger to transition into Drive State | |
-| Outcome |/route|PoseArray| A optimum route from the vehicle's location to the parking spot |
+| Input | adapt_vi|/vi_start| Bool | |
+| Trigger | adapt_roucomp|/route| PoseArray | |
+
+**Outcome 1**: Drive
 
 State 3: Stop when a obstacle is detected
 
-| In/Out |Component | Topic Name | Message Type | 
+| Inputs/Trigger |Component | Topic Name | Message Type | 
 | --------- | ---------- | ---------- | ----------- |
 | Input | /vi_start|string| Start trigger to transition into Drive State | |
 | Trigger | /vi_start|string| Start trigger to transition into Drive State | |
@@ -29,7 +30,7 @@ State 3: Stop when a obstacle is detected
 
 State 4: Stop near the parking spot
 
-| In/Out |Component | Topic Name | Message Type | 
+| Inputs/Trigger |Component | Topic Name | Message Type | 
 | --------- | ---------- | ---------- | ----------- |
 | Input | /vi_start|string| Start trigger to transition into Drive State | |
 | Trigger | /vi_start|string| Start trigger to transition into Drive State | |
@@ -37,7 +38,7 @@ State 4: Stop near the parking spot
 
 State 5: Park
 
-| In/Out |Component | Topic Name | Message Type | 
+| Inputs/Trigger |Component | Topic Name | Message Type | 
 | --------- | ---------- | ---------- | ----------- |
 | Input | /vi_start|string| Start trigger to transition into Drive State | |
 | Trigger | /vi_start|string| Start trigger to transition into Drive State | |
