@@ -6,9 +6,8 @@ State 1: Idle
 
 | In/Out |Component | Topic Name | Message Type |
 | --------- | ---------- | ---------- | ----------- |
-| Input | /vi_start|string| Start trigger to transition into Drive State | |
-| Trigger | /vi_start|string| Start trigger to transition into Drive State | | 
-| |
+| Input | adapt_vi|/vi_start| Bool | |
+| Trigger | adapt_vi|/vi_start| Bool | | 
 | Outcome |Drive|
 
 State 2: Drive
