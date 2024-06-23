@@ -8,6 +8,7 @@ State 1: Idle
 | --------- | ---------- | ---------- | ----------- |
 | Input | adapt_vi|/vi_start| Bool | |
 | Trigger | adapt_vi|/vi_start| Bool | | 
+
 **Outcome**: Drive
 
 State 2: Drive
