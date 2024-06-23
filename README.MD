@@ -4,7 +4,8 @@ Behaviour Planning is state machine which helps the Ego Vehicle to change states
 
 State 1: Idle
 
-| In/Out |Component | Topic Name | Message Type | 
+| In/Out |Component | Topic Name | Message Type |
+| --------- | ---------- | ---------- | ----------- |
 | Input | /vi_start|string| Start trigger to transition into Drive State | |
 | Trigger | /vi_start|string| Start trigger to transition into Drive State | |
 | Outcome |Drive|
