@@ -42,7 +42,7 @@ State 3: Stop when an obstacle is detected
 | Input | adapt_envmod|/stop| Bool | |
 | Trigger |  adapt_envmod|/stop| Bool | |
 
-**Outcome **: Stop when an obstacle is detected.
+**Outcome**: Stop when an obstacle is detected.
 
 State 4: Stop near the parking spot
 
@@ -51,9 +51,9 @@ State 4: Stop near the parking spot
 | Input | adapt_loc|/loc_pose| PoseStamped | |
 | Trigger | adapt_loc|/loc_pose| PoseStamped | |
 
-**Outcome **: Park.
+**Outcome**: Park.
 
-State 5: Park
+*State 5*: Park
 
 | Inputs/Trigger |Component | Topic Name | Message Type | 
 | --------- | ---------- | ---------- | ----------- |
