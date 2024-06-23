@@ -2,7 +2,7 @@
 ## Component Description
 Behaviour Planning is state machine which helps the Ego Vehicle to change states based on the situations and types of inputs it receives. The behaviour planning has 5 states Idle, Drive, Stop when a obstacle is detected, Stop near the parking, Park. The Ego vehicle is in idle state where it receives the 'vi_start' trigger from the adapt_vi from which it transition into drive state which has 3 outcomes first is Drive, second is Stop near parking spot, third is Stop when a obstacle is detected. The Drive outcome is achieved when the adapt_roucomp has published a 'route'. Once Ego-vehicle is driving if the adapt_envmod publishes the 'stop' the Ego-vehicle will transition into the Stop when a obstacle is detected. Once the Ego-vehicle has reached the location near the parking spot which is calculated using the current pose which is received from adapt_loc and the goal pose of the path which is received from adapt_roucomp. Once the Ego Vehicle is at the goal pose of the route Park state is triggered where adapt_trajp is set to choose the Park trajectory to park the vehicle. Once the vehicle is parked it returns to idle state.
 
-State 1: Idle
+*State 1*: Idle
 
 | Inputs/Trigger |Component | Topic Name | Message Type |
 | --------- | ---------- | ---------- | ----------- |
@@ -11,7 +11,7 @@ State 1: Idle
 
 **Outcome**: Drive
 
-State 2: Drive
+*State 2*: Drive
 
 | Inputs/Trigger |Component | Topic Name | Message Type | 
 | --------- | ---------- | ---------- | ----------- |
@@ -35,7 +35,7 @@ State 2: Drive
 **Outcome 3**: Stop near the parking spot.
 
 
-State 3: Stop when an obstacle is detected
+*State 3*: Stop when an obstacle is detected
 
 | Inputs/Trigger |Component | Topic Name | Message Type | 
 | --------- | ---------- | ---------- | ----------- |
@@ -44,7 +44,7 @@ State 3: Stop when an obstacle is detected
 
 **Outcome**: Stop when an obstacle is detected.
 
-State 4: Stop near the parking spot
+*State 4*: Stop near the parking spot
 
 | Inputs/Trigger |Component | Topic Name | Message Type | 
 | --------- | ---------- | ---------- | ----------- |
@@ -60,7 +60,7 @@ State 4: Stop near the parking spot
 | Input | adapt_loc|/loc_pose| PoseStamped | |
 | Trigger | adapt_trajp|/trajpf| PoseStamped | |
 
-**Outcome **: Parked.
+**Outcome**: Parked.
 
 
 ## The RQT Graph
