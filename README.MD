@@ -8,38 +8,39 @@ State 1: Idle
 | --------- | ---------- | ---------- | ----------- |
 | Input | /vi_start|string| Start trigger to transition into Drive State | |
 | Trigger | /vi_start|string| Start trigger to transition into Drive State | |
-| Output |/route|PoseArray| A optimum route from the vehicle's location to the parking spot |
+| Output |Drive|
 
 State 2: Drive
 
 | In/Out |Component | Topic Name | Message Type | 
 | --------- | ---------- | ---------- | ----------- |
-| Input | /route|PoseArray| A optimum route from the vehicle's location to the parking spot | |
-| Input |/stop| Bool|This message is published when the node detects obstacle in its close range(forward) | |
-| Input |/loc_pose |PoseStamped|Location of Ego Vehicle | |
+| Input | /vi_start|string| Start trigger to transition into Drive State | |
+| Trigger | /vi_start|string| Start trigger to transition into Drive State | |
+| Output |/route|PoseArray| A optimum route from the vehicle's location to the parking spot |
 
 State 3: Stop when a obstacle is detected
 
 | In/Out |Component | Topic Name | Message Type | 
 | --------- | ---------- | ---------- | ----------- |
-| Input | /stop|Bool| This message is published when the node detects obstacle in its close range(forward) | |
-| Output ||Idle|
+| Input | /vi_start|string| Start trigger to transition into Drive State | |
+| Trigger | /vi_start|string| Start trigger to transition into Drive State | |
+| Output |/route|PoseArray| A optimum route from the vehicle's location to the parking spot |
 
 State 4: Stop near the parking spot
 
 | In/Out |Component | Topic Name | Message Type | 
 | --------- | ---------- | ---------- | ----------- |
-| Input | /route|PoseArray| A optimum route from the vehicle's location to the parking spot | |
-| Input |/loc_pose |PoseStamped|Location of Ego Vehicle | |
-| Output ||Idle|
+| Input | /vi_start|string| Start trigger to transition into Drive State | |
+| Trigger | /vi_start|string| Start trigger to transition into Drive State | |
+| Output |/route|PoseArray| A optimum route from the vehicle's location to the parking spot |
 
 State 5: Park
 
 | In/Out |Component | Topic Name | Message Type | 
 | --------- | ---------- | ---------- | ----------- |
-| Input | /traj_trigger|PoseArray| A optimum route from the vehicle's location to the parking spot | |
-| Input |/loc_pose |PoseStamped|Location of Ego Vehicle | |
-| Output ||Parked|
+| Input | /vi_start|string| Start trigger to transition into Drive State | |
+| Trigger | /vi_start|string| Start trigger to transition into Drive State | |
+| Output |/route|PoseArray| A optimum route from the vehicle's location to the parking spot |
 
 
 ## The RQT Graph
