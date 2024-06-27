@@ -2,43 +2,65 @@
 ## Component Description
 Behaviour Planning is state machine which helps the Ego Vehicle to change states based on the situations and types of inputs it receives. The behaviour planning has 5 states Idle, Drive, Stop when a obstacle is detected, Stop near the parking, Park. The Ego vehicle is in idle state where it receives the 'vi_start' trigger from the adapt_vi from which it transition into drive state which has 3 outcomes first is Drive, second is Stop near parking spot, third is Stop when a obstacle is detected. The Drive outcome is achieved when the adapt_roucomp has published a 'route'. Once Ego-vehicle is driving if the adapt_envmod publishes the 'stop' the Ego-vehicle will transition into the Stop when a obstacle is detected. Once the Ego-vehicle has reached the location near the parking spot which is calculated using the current pose which is received from adapt_loc and the goal pose of the path which is received from adapt_roucomp. Once the Ego Vehicle is at the goal pose of the route Park state is triggered where adapt_trajp is set to choose the Park trajectory to park the vehicle. Once the vehicle is parked it returns to idle state.
 
-State 1: Idle
+*State 1*: Idle
 
-| In/Out | Topic Name| Message Type | Description | 
+| Inputs/Trigger |Component | Topic Name | Message Type |
 | --------- | ---------- | ---------- | ----------- |
-| Input | /vi_start|string| Start trigger to transition into Drive State | |
-| Output |/route|PoseArray| A optimum route from the vehicle's location to the parking spot |
+| Input | adapt_vi|/vi_start| Bool | |
+| Trigger | adapt_vi|/vi_start| Bool | | 
 
-State 2: Drive
+**Outcome**: Drive
 
-| In/Out | Topic Name| Message Type | Description | 
+*State 2*: Drive
+
+| Inputs/Trigger |Component | Topic Name | Message Type | 
 | --------- | ---------- | ---------- | ----------- |
-| Input | /route|PoseArray| A optimum route from the vehicle's location to the parking spot | |
-| Input |/stop| Bool|This message is published when the node detects obstacle in its close range(forward) | |
-| Input |/loc_pose |PoseStamped|Location of Ego Vehicle | |
+| Input | adapt_vi|/vi_start| Bool | |
+| Trigger | adapt_roucomp|/route| PoseArray | |
 
-State 3: Stop when a obstacle is detected
+**Outcome 1**: Drive
 
-| In/Out | Topic Name| Message Type | Description | 
+| Inputs/Trigger |Component | Topic Name | Message Type | 
 | --------- | ---------- | ---------- | ----------- |
-| Input | /stop|Bool| This message is published when the node detects obstacle in its close range(forward) | |
-| Output ||Idle|
+| Input | adapt_envmod|/stop| Bool | |
+| Trigger |  adapt_envmod|/stop| Bool | |
 
-State 4: Stop near the parking spot
+**Outcome 2**: Stop when an obstacle is detected.
 
-| In/Out | Topic Name| Message Type | Description | 
+| Inputs/Trigger |Component | Topic Name | Message Type | 
 | --------- | ---------- | ---------- | ----------- |
-| Input | /route|PoseArray| A optimum route from the vehicle's location to the parking spot | |
-| Input |/loc_pose |PoseStamped|Location of Ego Vehicle | |
-| Output ||Idle|
+| Input | adapt_loc|/loc_pose| PoseStamped | |
+| Trigger | adapt_loc|/loc_pose| PoseStamped | |
 
-State 5: Park
+**Outcome 3**: Stop near the parking spot.
 
-| In/Out | Topic Name| Message Type | Description | 
+
+*State 3*: Stop when an obstacle is detected
+
+| Inputs/Trigger |Component | Topic Name | Message Type | 
 | --------- | ---------- | ---------- | ----------- |
-| Input | /traj_trigger|PoseArray| A optimum route from the vehicle's location to the parking spot | |
-| Input |/loc_pose |PoseStamped|Location of Ego Vehicle | |
-| Output ||Parked|
+| Input | adapt_envmod|/stop| Bool | |
+| Trigger |  adapt_envmod|/stop| Bool | |
+
+**Outcome**: Stop when an obstacle is detected.
+
+*State 4*: Stop near the parking spot
+
+| Inputs/Trigger |Component | Topic Name | Message Type | 
+| --------- | ---------- | ---------- | ----------- |
+| Input | adapt_loc|/loc_pose| PoseStamped | |
+| Trigger | adapt_loc|/loc_pose| PoseStamped | |
+
+**Outcome**: Park.
+
+*State 5*: Park
+
+| Inputs/Trigger |Component | Topic Name | Message Type | 
+| --------- | ---------- | ---------- | ----------- |
+| Input | adapt_loc|/loc_pose| PoseStamped | |
+| Trigger | adapt_trajp|/trajpf| PoseStamped | |
+
+**Outcome**: Parked.
 
 
 ## The RQT Graph
