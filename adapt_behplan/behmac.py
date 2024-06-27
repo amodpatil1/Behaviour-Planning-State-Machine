@@ -239,7 +239,7 @@ def main():
         "PARK",
         ParkState(),
         transitions={
-            "parked": "PARKED"
+            "finished": "FINISHED"
         }
     )
 

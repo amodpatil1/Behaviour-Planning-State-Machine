@@ -205,13 +205,17 @@ def main():
             "park": "PARK"
         }
     )
-    sm.add_state(
-        "PARK",
-        ParkState(),
-        transitions={
-            "parked": "IDLE"
         }
     )
+    sm.add_state(
+    	"PARK"
+    	Park()
+    	transitions={
+    		"finished": "FINISHED"
+    		"idle":"IDLE"
+    	}
+    )
+	    		
 
     # pub FSM info
     YasminViewerPub("YASMIN_DEMO", sm)

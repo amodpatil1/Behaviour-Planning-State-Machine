@@ -1,0 +1,34 @@
+================================================
+  NLOC    CCN   token  PARAM  length  location  
+------------------------------------------------
+      11      1    124      2      16 __init__@36-51@behmac.py
+       3      1     23      2       3 vi_start_callback@53-55@behmac.py
+       3      1     33      2       3 loc_pose_callback@57-59@behmac.py
+       8      2     52      2      11 stop_callback@61-71@behmac.py
+       3      1     33      2       3 route_callback@73-75@behmac.py
+       3      1     23      2       3 trajpf_callback@77-79@behmac.py
+       3      1     23      2       3 trajpr_callback@81-83@behmac.py
+       3      1     27      1       3 __init__@88-90@behmac.py
+       6      2     41      2       7 execute@92-98@behmac.py
+       2      1     21      1       2 __init__@103-104@behmac.py
+      17      3    102      2      23 execute@106-128@behmac.py
+       3      1     24      2       3 __init__@133-135@behmac.py
+       9      2     56      2      13 execute@137-149@behmac.py
+       2      1     17      1       2 __init__@154-155@behmac.py
+       5      1     30      2       6 execute@157-162@behmac.py
+       2      1     17      1       2 __init__@167-168@behmac.py
+       8      3     53      2      11 execute@170-180@behmac.py
+       3      1     19      0       3 main.execute_fsm@252-254@behmac.py
+      59      1    226      0      81 main@184-264@behmac.py
+1 file analyzed.
+==============================================================
+NLOC    Avg.NLOC  AvgCCN  Avg.token  function_cnt    file
+--------------------------------------------------------------
+    172       8.1     1.4       49.7        19     behmac.py
+
+===============================================================================================================
+No thresholds exceeded (cyclomatic_complexity > 15 or length > 1000 or nloc > 1000000 or parameter_count > 100)
+==========================================================================================
+Total nloc   Avg.NLOC  AvgCCN  Avg.token   Fun Cnt  Warning cnt   Fun Rt   nloc Rt
+------------------------------------------------------------------------------------------
+       172       8.1     1.4       49.7       19            0      0.00    0.00
