@@ -60,12 +60,11 @@ class FSMNode(Node):
         self.blackboard.adapt_envmod = msg.data
         logging.debug(f"Received stop callback: {msg.data}")
 
-        # Publish to /stop_drive topic if an obstacle is detected
-        if msg.data:  # Assuming True means obstacle detected
+        # Check if an obstacle is detected or removed
+        if msg.data:
             logging.info("Obstacle detected by adapt_envmod")
-            stop_drive_msg = Bool()
-            stop_drive_msg.data = True
-            self.stop_drive_publisher.publish(stop_drive_msg)
+        else:
+            logging.info("Obstacle removed by adapt_envmod")
 
     def reach_goal_callback(self, msg):
         self.blackboard.reach_goal = msg.data
@@ -105,6 +104,7 @@ class DriveState(State):
         # Check for obstacle detection
         if blackboard.adapt_envmod:
             logging.info("Obstacle detected by adapt_envmod")
+            blackboard.previous_state = "drive"
             return "stop_when_obstacle_detected"
 
         # Keep driving otherwise
@@ -112,7 +112,7 @@ class DriveState(State):
 
 class StopWhenObstacleDetectedState(State):
     def __init__(self, fsm_node) -> None:
-        super().__init__(["stop"])
+        super().__init__(["stop", "drive", "parking"])
         self.fsm_node = fsm_node
 
     def execute(self, blackboard: Blackboard) -> str:
@@ -124,7 +124,12 @@ class StopWhenObstacleDetectedState(State):
         stop_drive_msg.data = True
         self.fsm_node.stop_drive_publisher.publish(stop_drive_msg)
 
-        return "finished"
+        # Wait for the obstacle to be removed
+        while blackboard.adapt_envmod:
+            time.sleep(0.1)
+
+        logging.info("Obstacle removed, returning to previous state")
+        return blackboard.previous_state
 
 class StopNearParkingSpotState(State):
     def __init__(self, fsm_node) -> None:
@@ -155,6 +160,7 @@ class ParkingState(State):
 
         if blackboard.adapt_envmod:
             logging.info("Obstacle detected during parking")
+            blackboard.previous_state = "parking"
             return "stop_when_obstacle_detected"
 
         return "parked"
@@ -191,6 +197,7 @@ def main():
         blackboard.adapt_envmod = False  # Initialize adapt_envmod as no obstacle detected
         blackboard.reach_goal = False  # Initialize reach_goal
         blackboard.final_state = False  # Initialize final_state
+        blackboard.previous_state = "idle"  # Initialize previous_state
 
         # Initialize ROS 2 node and publishers
         fsm_node = FSMNode(blackboard)
@@ -213,7 +220,11 @@ def main():
         sm.add_state(
             "STOP_WHEN_OBSTACLE_DETECTED",
             StopWhenObstacleDetectedState(fsm_node),
-            transitions={"stop": "finished"}
+            transitions={
+                "stop": "finished",
+                "drive": "DRIVE",
+                "parking": "PARKING"
+            }
         )
         sm.add_state(
             "STOP_NEAR_PARKING_SPOT",
@@ -251,12 +262,13 @@ def main():
         # Spin ROS 2 node
         rclpy.spin(fsm_node)
 
-    except Exception as e:
-        logging.error(f"ROS 2 initialization error: {e}")
-
-    finally:
-        # Shutdown
+        # Cleanup on shutdown
         fsm_thread.join()
+        fsm_node.destroy_node()
+        rclpy.shutdown()
+
+    except KeyboardInterrupt:
+        logging.info("yasmin_demo interrupted by user")
         rclpy.shutdown()
 
 if __name__ == "__main__":
