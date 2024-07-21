@@ -21,7 +21,6 @@ class FSMNode(Node):
         self.blackboard = blackboard
 
         # Subscriptions
-        # Removed subscription to /vi_boolean
         self.create_subscription(Bool, '/route_state', self.route_state_callback, 10)
         self.create_subscription(Bool, '/reach_goal', self.reach_goal_callback, 10)
         self.create_subscription(Bool, '/stop', self.stop_callback, 10)
@@ -39,12 +38,6 @@ class FSMNode(Node):
     def route_state_callback(self, msg):
         self.blackboard.adapt_roucomp = msg.data
         logging.debug(f"Received route_state callback: {msg.data}")
-
-        if msg.data:
-            drive_msg = Bool()
-            drive_msg.data = True
-            self.drive_publisher.publish(drive_msg)
-            logging.info("Route computed, published to /drive topic")
 
     def stop_callback(self, msg):
         self.blackboard.adapt_envmod = msg.data
@@ -73,8 +66,9 @@ class FSMNode(Node):
         logging.debug(f"Received final_state callback: {msg.data}")
 
     def timer_callback(self):
+        # Publish current drive and park states
         drive_msg = Bool()
-        drive_msg.data = not self.blackboard.adapt_envmod
+        drive_msg.data = not self.blackboard.adapt_envmod and self.blackboard.adapt_roucomp
         self.drive_publisher.publish(drive_msg)
 
         park_msg = Bool()
@@ -82,8 +76,9 @@ class FSMNode(Node):
         self.park_publisher.publish(park_msg)
 
 class IdleState(State):
-    def __init__(self) -> None:
+    def __init__(self, fsm_node) -> None:
         super().__init__(["drive_state"])
+        self.fsm_node = fsm_node
         self.logger = logging.getLogger('IdleState')
 
     def execute(self, blackboard: Blackboard) -> str:
@@ -92,6 +87,13 @@ class IdleState(State):
         while not blackboard.adapt_roucomp:
             self.logger.info('Waiting for route computation')
             time.sleep(0.1)
+
+        # Publish to /drive topic when transitioning to DriveState
+        drive_msg = Bool()
+        drive_msg.data = True
+        self.fsm_node.drive_publisher.publish(drive_msg)
+        logging.info("Route computed, published to /drive topic")
+        
         return "drive_state"
 
 class DriveState(State):
@@ -215,7 +217,7 @@ def main():
         # Add states to the StateMachine
         sm.add_state(
             "IDLE",
-            IdleState(),
+            IdleState(fsm_node),
             transitions={"drive_state": "DRIVE"}
         )
         sm.add_state(
@@ -231,7 +233,7 @@ def main():
             "STOP_WHEN_OBSTACLE_DETECTED",
             StopWhenObstacleDetectedState(fsm_node),
             transitions={
-                "stop": "finished",
+                "stop": "STOP_WHEN_OBSTACLE_DETECTED",
                 "drive": "DRIVE",
                 "parking": "PARKING"
             }
