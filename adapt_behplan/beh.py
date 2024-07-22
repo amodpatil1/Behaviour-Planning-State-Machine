@@ -8,7 +8,6 @@ from yasmin import State
 from yasmin import Blackboard
 from yasmin import StateMachine
 from yasmin_viewer import YasminViewerPub
-from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy, DurabilityPolicy
 import logging
 import threading
 
@@ -19,26 +18,17 @@ class FSMNode(Node):
     def __init__(self, blackboard):
         super().__init__('fsm_node')
         
-        # For critical messages
-        reliable_qos = QoSProfile(reliability=ReliabilityPolicy.RELIABLE,durability=DurabilityPolicy.TRANSIENT_LOCAL,history=HistoryPolicy.KEEP_LAST,depth=1)
-
-        # For non-critical messages
-        best_effort_qos = QoSProfile(reliability=ReliabilityPolicy.BEST_EFFORT,durability=DurabilityPolicy.VOLATILE,history=HistoryPolicy.KEEP_LAST,depth=1)
-        
-
-            
-            
         self.blackboard = blackboard
 
         # Subscriptions
-        self.create_subscription(Bool, '/route_state', self.route_state_callback, best_effort_qos)
-        self.create_subscription(Bool, '/reach_goal', self.reach_goal_callback, best_effort_qos)
-        self.create_subscription(Bool, '/stop', self.stop_callback, reliable_qos)
-        self.create_subscription(Bool, '/final_state', self.final_state_callback, best_effort_qos)
+        self.create_subscription(Bool, '/route_state', self.route_state_callback, 10)
+        self.create_subscription(Bool, '/reach_goal', self.reach_goal_callback, 10)
+        self.create_subscription(Bool, '/stop', self.stop_callback, 10)
+        self.create_subscription(Bool, '/final_state', self.final_state_callback, 10)
 
         # Publishers
         self.drive_publisher = self.create_publisher(Bool, '/drive', 10)
-        self.park_publisher = self.create_publisher(Bool, '/park', best_effort_qos)
+        self.park_publisher = self.create_publisher(Bool, '/park', 10)
 
         # Timer to publish /drive and /park every 0.01 seconds
         self.timer = self.create_timer(0.01, self.timer_callback)
