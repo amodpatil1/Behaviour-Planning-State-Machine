@@ -197,7 +197,7 @@ before you run the node make sure to start the adapt_roucomp and adapt_loc compo
 You can now launch the Behaviour Planning node:
 The entry point for Behaviour Planning is **`behstate`**.
 ```shell
-ros2 run adapt_behplan behstate
+ros2 run adapt_behplan behave
 ```
 
 ## Visulaization Instructions
