@@ -86,9 +86,7 @@ The behaviour Planning act as the brain of the Ego-vehicle where it receives sev
 The Drive state has two outcomes Stop when an obstacle is detected, Stop near the parking spot. In the Drive state it publishes /drive topic as True to the adapt_trajp. Once the adapt_envmod publishes /stop topic as True the Ego-vehicle transition into Stop when an obstacle is detected State. When the topic /reach_goal is received as True from the adapt_trajp, then the Ego-vehicle transitions into the Stop near Parking Spot State. 
 
 
-**Stop when an obstacle is a detected State**
-
-and publishes /drive topic as False to the adapt_trajp
+**State: Stop when an obstacle is a detected State.**
 
 The Stop when an obstacle has two outcomes which transition the Ego-vehicle into the Stop when an obstacle is detected state and Drive state. When an obstacle detected in the path of the Ego-vehicle the adapt_envmod publishes a /stop topic as True, then the adapt_behplan publishes /drive topic as False to the adapt_trajp. Once the detected obstacle is removed from the path of the Ego-Vehicle the adapt_envmod publishes /stop topic as False, then the adapt_behplan publishes /drive topic as True to the adapt_trajp. 
 
