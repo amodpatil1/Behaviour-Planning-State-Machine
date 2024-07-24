@@ -20,9 +20,6 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-              'beh_node = adapt_behplan.beh_plan:main',
-              'planner = adapt_behplan.beh_planner:main',
-              'behstate= adapt_behplan.statemac_1:main',
               'behave= adapt_behplan.beh:main'
         ],
     },
