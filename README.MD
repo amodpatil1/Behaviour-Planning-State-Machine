@@ -14,21 +14,15 @@ Behaviour Planning is state machine which helps the Ego Vehicle to change states
 
 | Trigger |Component | Topic Name | Message Type | 
 | --------- | ---------- | ---------- | ----------- |
-| Trigger | adapt_roucomp|/route| PoseArray | |
+| Trigger | adapt_envmod|/stop| Bool | |
 
-**Outcome 1**: Drive
-
-| Trigger |Component | Topic Name | Message Type | 
-| --------- | ---------- | ---------- | ----------- |
-| Trigger |  adapt_envmod|/stop| Bool | |
-
-**Outcome 2**: Stop when an obstacle is detected.
+**Outcome 1**: Stop when an obstacle is detected.
 
 | Trigger |Component | Topic Name | Message Type | 
 | --------- | ---------- | ---------- | ----------- |
-| Trigger | adapt_loc|/loc_pose| PoseStamped | |
+| Trigger | adapt_trajp|/reach_goal| Bool | |
 
-**Outcome 3**: Stop near the parking spot.
+**Outcome 2**: Stop near the parking spot.
 
 
 *State 3*: **Stop when an obstacle is detected**
@@ -43,25 +37,19 @@ Behaviour Planning is state machine which helps the Ego Vehicle to change states
 
 | Trigger |Component | Topic Name | Message Type | 
 | --------- | ---------- | ---------- | ----------- |
-| Trigger | adapt_loc|/loc_pose| PoseStamped | |
+| Trigger | adapt_trajp|/park| Bool | |
 
-**Outcome**: Park.
+**Outcome**: Parking.
 
 *State 5*: **Parking**
 
 | Inputs/Trigger |Component | Topic Name | Message Type | 
 | --------- | ---------- | ---------- | ----------- |
-| Trigger | adapt_trajp|/trajpf| PoseStamped | |
+| Trigger | adapt_mobint|/final_state| Bool | |
 
 **Outcome**: Parked.
 
 *State 6*: **Parked**
-
-| Inputs/Trigger |Component | Topic Name | Message Type | 
-| --------- | ---------- | ---------- | ----------- |
-| Trigger | adapt_trajp|/trajpf| PoseStamped | |
-
-**Outcome**: Parked.
 
 
 ## The RQT Graph
