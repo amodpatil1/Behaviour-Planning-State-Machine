@@ -57,7 +57,7 @@ Behaviour Planning is state machine which helps the Ego Vehicle to change states
 <img src="https://git.hs-coburg.de/ADAPT/adapt_behplan/raw/branch/main/images/rqtnodegraph.png" alt="Behaviour Planning Block Diagram" title="Behaviour Planning" width="2582" height="589">
 
 ## Behaviour Planning Block Diagram 
-<img src="images/behplan.jpg" alt="Behaviour Planning Block Diagram" title="Behaviour Planning" width="1734" height="901">
+<img src="https://git.hs-coburg.de/ADAPT/adapt_behplan/raw/branch/main/images/block_diagram.png" alt="Behaviour Planning Block Diagram" title="Behaviour Planning" width="1734" height="901">
 
 
 
