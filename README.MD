@@ -4,7 +4,7 @@ Behaviour Planning is state machine which helps the Ego Vehicle to change states
 
 *State 1*: Idle
 
-| Inputs/Trigger |Component | Topic Name | Message Type |
+| Trigger |Component | Topic Name | Message Type |
 | --------- | ---------- | ---------- | ----------- |
 | Trigger | adapt_roucomp|/route_start| Bool | | 
 
@@ -12,23 +12,20 @@ Behaviour Planning is state machine which helps the Ego Vehicle to change states
 
 *State 2*: Drive
 
-| Inputs/Trigger |Component | Topic Name | Message Type | 
+| Trigger |Component | Topic Name | Message Type | 
 | --------- | ---------- | ---------- | ----------- |
-| Input | adapt_vi|/vi_start| Bool | |
 | Trigger | adapt_roucomp|/route| PoseArray | |
 
 **Outcome 1**: Drive
 
-| Inputs/Trigger |Component | Topic Name | Message Type | 
+| Trigger |Component | Topic Name | Message Type | 
 | --------- | ---------- | ---------- | ----------- |
-| Input | adapt_envmod|/stop| Bool | |
 | Trigger |  adapt_envmod|/stop| Bool | |
 
 **Outcome 2**: Stop when an obstacle is detected.
 
-| Inputs/Trigger |Component | Topic Name | Message Type | 
+| Trigger |Component | Topic Name | Message Type | 
 | --------- | ---------- | ---------- | ----------- |
-| Input | adapt_loc|/loc_pose| PoseStamped | |
 | Trigger | adapt_loc|/loc_pose| PoseStamped | |
 
 **Outcome 3**: Stop near the parking spot.
@@ -36,18 +33,16 @@ Behaviour Planning is state machine which helps the Ego Vehicle to change states
 
 *State 3*: Stop when an obstacle is detected
 
-| Inputs/Trigger |Component | Topic Name | Message Type | 
+| Trigger |Component | Topic Name | Message Type | 
 | --------- | ---------- | ---------- | ----------- |
-| Input | adapt_envmod|/stop| Bool | |
 | Trigger |  adapt_envmod|/stop| Bool | |
 
 **Outcome**: Stop when an obstacle is detected.
 
 *State 4*: Stop near the parking spot
 
-| Inputs/Trigger |Component | Topic Name | Message Type | 
+| Trigger |Component | Topic Name | Message Type | 
 | --------- | ---------- | ---------- | ----------- |
-| Input | adapt_loc|/loc_pose| PoseStamped | |
 | Trigger | adapt_loc|/loc_pose| PoseStamped | |
 
 **Outcome**: Park.
@@ -56,7 +51,6 @@ Behaviour Planning is state machine which helps the Ego Vehicle to change states
 
 | Inputs/Trigger |Component | Topic Name | Message Type | 
 | --------- | ---------- | ---------- | ----------- |
-| Input | adapt_loc|/loc_pose| PoseStamped | |
 | Trigger | adapt_trajp|/trajpf| PoseStamped | |
 
 **Outcome**: Parked.
