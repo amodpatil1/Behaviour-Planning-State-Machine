@@ -2,7 +2,7 @@
 ## Component Description
 Behaviour Planning is state machine which helps the Ego Vehicle to change states based on the situations and types of inputs it receives. The behaviour planning has 6 states Idle, Drive, Stop when a obstacle is detected, Stop near the parking, Parking and Parked.
 
-*State 1*: Idle
+*State 1*: **Idle**
 
 | Trigger |Component | Topic Name | Message Type |
 | --------- | ---------- | ---------- | ----------- |
@@ -10,7 +10,7 @@ Behaviour Planning is state machine which helps the Ego Vehicle to change states
 
 **Outcome**: Drive
 
-*State 2*: Drive
+*State 2*: **Drive**
 
 | Trigger |Component | Topic Name | Message Type | 
 | --------- | ---------- | ---------- | ----------- |
@@ -31,7 +31,7 @@ Behaviour Planning is state machine which helps the Ego Vehicle to change states
 **Outcome 3**: Stop near the parking spot.
 
 
-*State 3*: Stop when an obstacle is detected
+*State 3*: **Stop when an obstacle is detected**
 
 | Trigger |Component | Topic Name | Message Type | 
 | --------- | ---------- | ---------- | ----------- |
@@ -39,7 +39,7 @@ Behaviour Planning is state machine which helps the Ego Vehicle to change states
 
 **Outcome**: Stop when an obstacle is detected.
 
-*State 4*: Stop near the parking spot
+*State 4*: **Stop near the parking spot**
 
 | Trigger |Component | Topic Name | Message Type | 
 | --------- | ---------- | ---------- | ----------- |
@@ -47,7 +47,15 @@ Behaviour Planning is state machine which helps the Ego Vehicle to change states
 
 **Outcome**: Park.
 
-*State 5*: Park
+*State 5*: **Parking**
+
+| Inputs/Trigger |Component | Topic Name | Message Type | 
+| --------- | ---------- | ---------- | ----------- |
+| Trigger | adapt_trajp|/trajpf| PoseStamped | |
+
+**Outcome**: Parked.
+
+*State 6*: **Parked**
 
 | Inputs/Trigger |Component | Topic Name | Message Type | 
 | --------- | ---------- | ---------- | ----------- |
