@@ -54,7 +54,7 @@ Behaviour Planning is state machine which helps the Ego Vehicle to change states
 
 ## The RQT Graph
 
-<img src="images/behpl.png" alt="Behaviour Planning Block Diagram" title="Behaviour Planning" width="1810" height="415">
+<img src="/images/rqtnodegraph.png" alt="Behaviour Planning Block Diagram" title="Behaviour Planning" width="1810" height="415">
 
 ## Behaviour Planning Block Diagram 
 <img src="images/behplan.jpg" alt="Behaviour Planning Block Diagram" title="Behaviour Planning" width="1734" height="901">
