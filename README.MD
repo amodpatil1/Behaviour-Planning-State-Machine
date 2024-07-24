@@ -6,8 +6,7 @@ Behaviour Planning is state machine which helps the Ego Vehicle to change states
 
 | Inputs/Trigger |Component | Topic Name | Message Type |
 | --------- | ---------- | ---------- | ----------- |
-| Input | adapt_vi|/vi_start| Bool | |
-| Trigger | adapt_vi|/vi_start| Bool | | 
+| Trigger | adapt_roucomp|/route_start| Bool | | 
 
 **Outcome**: Drive
 
