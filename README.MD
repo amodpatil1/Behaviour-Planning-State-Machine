@@ -1,66 +1,55 @@
 :bulb: Maintainer `AMOD PATIL'
 ## Component Description
-Behaviour Planning is state machine which helps the Ego Vehicle to change states based on the situations and types of inputs it receives. The behaviour planning has 5 states Idle, Drive, Stop when a obstacle is detected, Stop near the parking, Park. The Ego vehicle is in idle state where it receives the 'vi_start' trigger from the adapt_vi from which it transition into drive state which has 3 outcomes first is Drive, second is Stop near parking spot, third is Stop when a obstacle is detected. The Drive outcome is achieved when the adapt_roucomp has published a 'route'. Once Ego-vehicle is driving if the adapt_envmod publishes the 'stop' the Ego-vehicle will transition into the Stop when a obstacle is detected. Once the Ego-vehicle has reached the location near the parking spot which is calculated using the current pose which is received from adapt_loc and the goal pose of the path which is received from adapt_roucomp. Once the Ego Vehicle is at the goal pose of the route Park state is triggered where adapt_trajp is set to choose the Park trajectory to park the vehicle. Once the vehicle is parked it returns to idle state.
+Behaviour Planning is state machine which helps the Ego Vehicle to change states based on the situations and types of inputs it receives. The behaviour planning has 6 states Idle, Drive, Stop when a obstacle is detected, Stop near the parking, Parking and Parked.
 
-*State 1*: Idle
+*State 1*: **Idle**
 
-| Inputs/Trigger |Component | Topic Name | Message Type |
+| Trigger |Component | Topic Name | Message Type |
 | --------- | ---------- | ---------- | ----------- |
-| Input | adapt_vi|/vi_start| Bool | |
-| Trigger | adapt_vi|/vi_start| Bool | | 
+| Trigger | adapt_roucomp|/route_start| Bool | | 
 
 **Outcome**: Drive
 
-*State 2*: Drive
+*State 2*: **Drive**
 
-| Inputs/Trigger |Component | Topic Name | Message Type | 
+| Trigger |Component | Topic Name | Message Type | 
 | --------- | ---------- | ---------- | ----------- |
-| Input | adapt_vi|/vi_start| Bool | |
-| Trigger | adapt_roucomp|/route| PoseArray | |
+| Trigger | adapt_envmod|/stop| Bool | |
 
-**Outcome 1**: Drive
+**Outcome 1**: Stop when an obstacle is detected.
 
-| Inputs/Trigger |Component | Topic Name | Message Type | 
+| Trigger |Component | Topic Name | Message Type | 
 | --------- | ---------- | ---------- | ----------- |
-| Input | adapt_envmod|/stop| Bool | |
-| Trigger |  adapt_envmod|/stop| Bool | |
+| Trigger | adapt_trajp|/reach_goal| Bool | |
 
-**Outcome 2**: Stop when an obstacle is detected.
+**Outcome 2**: Stop near the parking spot.
 
-| Inputs/Trigger |Component | Topic Name | Message Type | 
+
+*State 3*: **Stop when an obstacle is detected**
+
+| Trigger |Component | Topic Name | Message Type | 
 | --------- | ---------- | ---------- | ----------- |
-| Input | adapt_loc|/loc_pose| PoseStamped | |
-| Trigger | adapt_loc|/loc_pose| PoseStamped | |
-
-**Outcome 3**: Stop near the parking spot.
-
-
-*State 3*: Stop when an obstacle is detected
-
-| Inputs/Trigger |Component | Topic Name | Message Type | 
-| --------- | ---------- | ---------- | ----------- |
-| Input | adapt_envmod|/stop| Bool | |
 | Trigger |  adapt_envmod|/stop| Bool | |
 
 **Outcome**: Stop when an obstacle is detected.
 
-*State 4*: Stop near the parking spot
+*State 4*: **Stop near the parking spot**
+
+| Trigger |Component | Topic Name | Message Type | 
+| --------- | ---------- | ---------- | ----------- |
+| Trigger | adapt_trajp|/park| Bool | |
+
+**Outcome**: Parking.
+
+*State 5*: **Parking**
 
 | Inputs/Trigger |Component | Topic Name | Message Type | 
 | --------- | ---------- | ---------- | ----------- |
-| Input | adapt_loc|/loc_pose| PoseStamped | |
-| Trigger | adapt_loc|/loc_pose| PoseStamped | |
-
-**Outcome**: Park.
-
-*State 5*: Park
-
-| Inputs/Trigger |Component | Topic Name | Message Type | 
-| --------- | ---------- | ---------- | ----------- |
-| Input | adapt_loc|/loc_pose| PoseStamped | |
-| Trigger | adapt_trajp|/trajpf| PoseStamped | |
+| Trigger | adapt_mobint|/final_state| Bool | |
 
 **Outcome**: Parked.
+
+*State 6*: **Parked**
 
 
 ## The RQT Graph
@@ -197,7 +186,7 @@ before you run the node make sure to start the adapt_roucomp and adapt_loc compo
 You can now launch the Behaviour Planning node:
 The entry point for Behaviour Planning is **`behstate`**.
 ```shell
-ros2 run adapt_behplan behstate
+ros2 run adapt_behplan behave
 ```
 
 ## Visulaization Instructions
