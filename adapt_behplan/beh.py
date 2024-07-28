@@ -15,18 +15,26 @@ import threading
 logging.basicConfig(level=logging.DEBUG)
 
 class FSMNode(Node):
+    """Finite State Machine (FSM) Node for managing the state transitions."""
+
     def __init__(self, blackboard):
+        """
+        Initialize the FSM node with subscriptions, publishers, and timer.
+
+        Args:
+            blackboard (Blackboard): The shared blackboard for state data.
+        """
         super().__init__('fsm_node')
         
         self.blackboard = blackboard
 
-        # Subscriptions
+        # Subscriptions to various topics
         self.create_subscription(Bool, '/route_state', self.route_state_callback, 10)
         self.create_subscription(Bool, '/reach_goal', self.reach_goal_callback, 10)
         self.create_subscription(Bool, '/stop', self.stop_callback, 10)
         self.create_subscription(Bool, '/final_state', self.final_state_callback, 10)
 
-        # Publishers
+        # Publishers to drive and park topics
         self.drive_publisher = self.create_publisher(Bool, '/drive', 10)
         self.park_publisher = self.create_publisher(Bool, '/park', 10)
 
@@ -36,10 +44,12 @@ class FSMNode(Node):
         logging.debug("Initialized FSM Node")
 
     def route_state_callback(self, msg):
+        """Callback for /route_state topic to update route computation status."""
         self.blackboard.adapt_roucomp = msg.data
         logging.debug(f"Received route_state callback: {msg.data}")
 
     def stop_callback(self, msg):
+        """Callback for /stop topic to handle obstacle detection and removal."""
         self.blackboard.adapt_envmod = msg.data
         logging.debug(f"Received stop callback: {msg.data}")
 
@@ -58,14 +68,17 @@ class FSMNode(Node):
             self.blackboard.stop_removed_during_parking = True
 
     def reach_goal_callback(self, msg):
+        """Callback for /reach_goal topic to update goal reach status."""
         self.blackboard.reach_goal = msg.data
         logging.debug(f"Received reach_goal callback: {msg.data}")
 
     def final_state_callback(self, msg):
+        """Callback for /final_state topic to update final state status."""
         self.blackboard.final_state = msg.data
         logging.debug(f"Received final_state callback: {msg.data}")
 
     def timer_callback(self):
+        """Timer callback to publish current drive and park states."""
         # Publish current drive and park states
         drive_msg = Bool()
         drive_msg.data = not self.blackboard.adapt_envmod and self.blackboard.adapt_roucomp
@@ -76,12 +89,29 @@ class FSMNode(Node):
         self.park_publisher.publish(park_msg)
 
 class IdleState(State):
+    """State representing the Idle state in the FSM."""
+
     def __init__(self, fsm_node) -> None:
+        """
+        Initialize IdleState with the FSM node.
+
+        Args:
+            fsm_node (FSMNode): The FSM node instance.
+        """
         super().__init__(["drive_state"])
         self.fsm_node = fsm_node
         self.logger = logging.getLogger('IdleState')
 
     def execute(self, blackboard: Blackboard) -> str:
+        """
+        Execute the Idle state.
+
+        Args:
+            blackboard (Blackboard): The shared blackboard for state data.
+
+        Returns:
+            str: The next state to transition to.
+        """
         logging.debug("Executing state IDLE")
         # Wait for route to be computed
         while not blackboard.adapt_roucomp:
@@ -97,11 +127,28 @@ class IdleState(State):
         return "drive_state"
 
 class DriveState(State):
+    """State representing the Drive state in the FSM."""
+
     def __init__(self, fsm_node) -> None:
+        """
+        Initialize DriveState with the FSM node.
+
+        Args:
+            fsm_node (FSMNode): The FSM node instance.
+        """
         super().__init__(["drive", "stop_when_obstacle_detected", "stop_near_parking_spot"])
         self.fsm_node = fsm_node
 
     def execute(self, blackboard: Blackboard) -> str:
+        """
+        Execute the Drive state.
+
+        Args:
+            blackboard (Blackboard): The shared blackboard for state data.
+
+        Returns:
+            str: The next state to transition to.
+        """
         logging.debug("Executing state DRIVE")
         time.sleep(3)  # Simulate driving
 
@@ -120,11 +167,28 @@ class DriveState(State):
         return "drive"
 
 class StopWhenObstacleDetectedState(State):
+    """State representing the Stop When Obstacle Detected state in the FSM."""
+
     def __init__(self, fsm_node) -> None:
+        """
+        Initialize StopWhenObstacleDetectedState with the FSM node.
+
+        Args:
+            fsm_node (FSMNode): The FSM node instance.
+        """
         super().__init__(["stop", "drive", "parking"])
         self.fsm_node = fsm_node
 
     def execute(self, blackboard: Blackboard) -> str:
+        """
+        Execute the Stop When Obstacle Detected state.
+
+        Args:
+            blackboard (Blackboard): The shared blackboard for state data.
+
+        Returns:
+            str: The next state to transition to.
+        """
         logging.debug("Executing state STOP_WHEN_OBSTACLE_DETECTED")
 
         # Publish to /drive topic with False when obstacle is detected
@@ -141,11 +205,28 @@ class StopWhenObstacleDetectedState(State):
         return blackboard.previous_state
 
 class StopNearParkingSpotState(State):
+    """State representing the Stop Near Parking Spot state in the FSM."""
+
     def __init__(self, fsm_node) -> None:
+        """
+        Initialize StopNearParkingSpotState with the FSM node.
+
+        Args:
+            fsm_node (FSMNode): The FSM node instance.
+        """
         super().__init__(["parking"])
         self.fsm_node = fsm_node
 
     def execute(self, blackboard: Blackboard) -> str:
+        """
+        Execute the Stop Near Parking Spot state.
+
+        Args:
+            blackboard (Blackboard): The shared blackboard for state data.
+
+        Returns:
+            str: The next state to transition to.
+        """
         logging.debug("Executing state STOP_NEAR_PARKING_SPOT")
         time.sleep(2)
         # Trigger parking procedure
@@ -157,11 +238,28 @@ class StopNearParkingSpotState(State):
         return "parking"
 
 class ParkingState(State):
+    """State representing the Parking state in the FSM."""
+
     def __init__(self, fsm_node) -> None:
+        """
+        Initialize ParkingState with the FSM node.
+
+        Args:
+            fsm_node (FSMNode): The FSM node instance.
+        """
         super().__init__(["parked", "stop_when_obstacle_detected", "parking"])
         self.fsm_node = fsm_node
 
     def execute(self, blackboard: Blackboard) -> str:
+        """
+        Execute the Parking state.
+
+        Args:
+            blackboard (Blackboard): The shared blackboard for state data.
+
+        Returns:
+            str: The next state to transition to.
+        """
         logging.debug("Executing state PARKING")
 
         blackboard.current_state = "parking"
@@ -181,15 +279,35 @@ class ParkingState(State):
         return "parked"
 
 class ParkedState(State):
+    """State representing the Parked state in the FSM."""
+
     def __init__(self, fsm_node) -> None:
+        """
+        Initialize ParkedState with the FSM node.
+
+        Args:
+            fsm_node (FSMNode): The FSM node instance.
+        """
         super().__init__(["idle"])
         self.fsm_node = fsm_node
 
-    def execute(blackboard: Blackboard) -> str:
+    def execute(self, blackboard: Blackboard) -> str:
+        """
+        Execute the Parked state.
+
+        Args:
+            blackboard (Blackboard): The shared blackboard for state data.
+
+        Returns:
+            str: The next state to transition to.
+        """
         logging.debug("Executing state PARKED")
         return "finished"
 
 def main():
+    """
+    Main function to initialize ROS 2, create and execute the state machine, and handle shutdown.
+    """
     logging.info("Starting yasmin_demo")
 
     try:
@@ -263,6 +381,9 @@ def main():
 
         # Execute FSM in a separate thread
         def execute_fsm():
+            """
+            Function to execute the FSM in a separate thread.
+            """
             try:
                 outcome = sm.execute(blackboard)
                 logging.info(f"FSM execution outcome: {outcome}")
@@ -286,4 +407,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
