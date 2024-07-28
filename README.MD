@@ -54,97 +54,63 @@ Behaviour Planning is state machine which helps the Ego Vehicle to change states
 
 ## The RQT Graph
 
-<img src="https://git.hs-coburg.de/ADAPT/adapt_behplan/raw/branch/main/images/rqtnodegraph.png" alt="Behaviour Planning Block Diagram" title="Behaviour Planning" width="2582" height="589">
+<img src="https://git.hs-coburg.de/ADAPT/adapt_behplan/raw/branch/main/images/rqtnodegraph.png" alt="Behaviour Planning Block Diagram" title="Behaviour Planning" width="1000" height="200">
 
 ## Behaviour Planning Block Diagram 
-<img src="https://git.hs-coburg.de/ADAPT/adapt_behplan/raw/branch/main/images/block_diagram.drawio.png" alt="Behaviour Planning Block Diagram" title="Behaviour Planning" width="741" height="262">
+<img src="https://git.hs-coburg.de/ADAPT/adapt_behplan/raw/branch/main/images/block_diagram.drawio.png" alt="Behaviour Planning Block Diagram" title="Behaviour Planning" width="700" height="250">
 
+
+## Behaviour Planning State Diagram 
+<img src="https://git.hs-coburg.de/ADAPT/adapt_behplan/raw/branch/main/images/Fina.jpg" alt="Behaviour Planning State Diagram" title="Behaviour Planning" width="700" height="1500">
 
 
 
 ## Functionality
-The behaviour Planning act as the brain of the Ego-vehicle where it receives several inputs from various components and based on the inputs received it triggers the specific functions. It has 5 States and particular state has their own outcomes.
+The behaviour Planning act as the brain of the Ego-vehicle where it receives several inputs from various components and based on the inputs received it triggers the specific functions. It has 6 States and particular state has their own outcomes.
 1. Idle 
 2. Drive
 3. Stop when an obstacle is detected
 4. Stop near the parking spot
-5. Park
+5. Parking 
+6. Parked
 
-There a few components are continuously publishing through out the entire process of the vehicle.
-adapt_envmod
-adapt_loc
+
  
 **State: Idle**
 
+ The idle state has only one outcome which is drive state. In the idle state, when the /route_state is received as True from the adapt_roucomp, the Ego-vehicle is transition into the Drive State and publishes the /drive topic as True to the adapt_trajp. 
 
-Components  
-
-adapt_loc
-
-adapt_envmod
-
-adapt_vi
-
- The idle state has only one outcome which is drive state. In the idle state the vehicle is continuously scanning for the object in front via adapt_envmod and the adapt_loc is being used to know the location of the Ego-vehicle. The behaviour planning will listen to the topic 'vi_start' from adapt_vi and once 'vi_start is heard the Ego-vehicle will transition into Drive state. 
 
 **State: Drive**
 
-
-Components 
-adapt_loc
-adapt_envmod
-adapt_roucomp
-adapt_trajp
-
-The Drive state has three outcomes Drive, Stop when an obstacle is detected, Stop near the parking spot. In the Drive state when topic 'vi_start' is heard it triggers the adapt_roucomp which publishes a topic '/route' which is a PoseArray to transition into the drive. Once the Ego-vehicle is in Drive it continuously scan for obstacle in its path, this is done via adapt_envmod and if a obstacle is detected the adapt_envmod sends a Bool message in the topic '/stop' which transition the Ego-vehicle into stop when an obstacle is detected state and the Ego-vehicle goes into the Idle state. If there is no obstacle in the path of the Ego-vehicle then stays in the Drive and it calculates the distance to goal pose using its current position received from the adapt_loc and once it reaches the goal pose of the '/route' it transition the vehicle into the Stop near the parking spot.
+The Drive state has two outcomes Stop when an obstacle is detected, Stop near the parking spot. In the Drive state it publishes /drive topic as True to the adapt_trajp. Once the adapt_envmod publishes /stop topic as True the Ego-vehicle transition into Stop when an obstacle is detected State. When the topic /reach_goal is received as True from the adapt_trajp, then the Ego-vehicle transitions into the Stop near Parking Spot State. 
 
 
-**Stop when an obstacle is a detected State**
+**State: Stop when an obstacle is a detected State.**
 
+The Stop when an obstacle has two outcomes which transition the Ego-vehicle into the Stop when an obstacle is detected state and Drive state. When an obstacle detected in the path of the Ego-vehicle the adapt_envmod publishes a /stop topic as True, then the adapt_behplan publishes /drive topic as False to the adapt_trajp. Once the detected obstacle is removed from the path of the Ego-Vehicle the adapt_envmod publishes /stop topic as False, then the adapt_behplan publishes /drive topic as True to the adapt_trajp. 
 
-Components 
-
-adapt_loc
-
-adapt_envmod
-
-The Stop when an obstacle has one outcome which transition the Ego-vehicle into the Idle State. When an obstacle detected in the /route via the adapt_envmod it publishes a '/stop' topic which stop the Ego-vehicle and transitions the Ego-vehicle into the Idle state. 
 
 **State: Stop near the parking spot.**
 
-
-Components 
-
-adapt_loc
-
-adapt_envmod
-
-adapt_trajp
-
-The Stop near the Parking spot has one outcome which transition the Ego-vehicle into Park State. When the Ego-vehicle reaches the goal pose of the '/route' received from the adapt_roucomp which is calculated using an distance formula where the current location of the Ego-vehicle is received via the topic'/loc_pose' from the adapt_loc and the goal pose of the '/route' received from the adapt_roucomp and once the Ego-vehicle reaches the goal pose of the '/route' it triggers the Ego-vehicle to transition into Park state.
-
-**State: Park**
+The Stop near the Parking spot has one outcome which transition the Ego-vehicle into Parking State. When the Ego-vehicle reaches the goal pose of the '/reach_goal' received as True from the adapt_trajp, the Ego-Vehicle transitions into the Parking State. 
 
 
-Components
+**State: Parking**
 
-adapt_loc
+The Parking state has two outcomes Stop when an obstacle detected State, Parked State. When an obstacle is detected in the path of the Ego-Vehicle Transition into the Stop when an obstacle State. When the adapt_mobint publishes /final_state topic as True, the Ego-vehicle transition into the Parked State.
 
-adapt_envmod
 
-adapt_trajp
-
-The Park state has three outcomes Park forward, Park reverse and Parked. When the Ego-vehicle reaches the goal pose of the '/route' it triggers the adapt_trajp to choose /trajpf which is the trajectory for Driving forward in Parking State which is the first outcome Park forward, once Driving forward trajectory is complete, the adapt_trajp changes to '/trajpr' which drives the Ego-vehicle in the reverse into the parking Spot, which is the second outcome Park reverse. Once the Ego-vehicle is Parked in the Parking Spot it outcomes the third outcome Parked this done using a distance formula which use '/loc_pose' from adapt_loc and Parking spot location received from adapt_loc.
+**State: Parked**
 
 
 
  ## Dependencies
  1. adapt_roucomp
- 2. adapt_loc
- 3. adapt_envmod
- 4. adapt_vi
- 5. adapt_trajp
- 6. yasmin: https://github.com/uleroboticsgroup/yasmin
+ 2. adapt_envmod
+ 3. adapt_mobint
+ 4. adapt_trajp
+ 5. yasmin: https://github.com/uleroboticsgroup/yasmin
 (Note: Please install yasmin on your system before running behaviour planning node)
 
 
