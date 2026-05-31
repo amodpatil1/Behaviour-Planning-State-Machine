@@ -1,5 +1,3 @@
-:bulb: Maintainer `AMOD PATIL'
-## Component Description
 Behaviour Planning is state machine which helps the Ego Vehicle to change states based on the situations and types of inputs it receives. The behaviour planning has 6 states Idle, Drive, Stop when a obstacle is detected, Stop near the parking, Parking and Parked.
 
 *State 1*: **Idle**
